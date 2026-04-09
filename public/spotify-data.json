@@ -1,0 +1,102 @@
+{
+  "tracks": [
+    {
+      "id": "1",
+      "name": "Motion Picture Soundtrack",
+      "artists": [{ "name": "Radiohead" }],
+      "album": { "images": [null, null, { "url": "https://placehold.co/36x36/161616/555555" }] }
+    },
+    {
+      "id": "2",
+      "name": "Holocene",
+      "artists": [{ "name": "Bon Iver" }],
+      "album": { "images": [null, null, { "url": "https://placehold.co/36x36/161616/555555" }] }
+    },
+    {
+      "id": "3",
+      "name": "Breathe (In the Air)",
+      "artists": [{ "name": "Pink Floyd" }],
+      "album": { "images": [null, null, { "url": "https://placehold.co/36x36/161616/555555" }] }
+    },
+    {
+      "id": "4",
+      "name": "Skinny Love",
+      "artists": [{ "name": "Bon Iver" }],
+      "album": { "images": [null, null, { "url": "https://placehold.co/36x36/161616/555555" }] }
+    },
+    {
+      "id": "5",
+      "name": "Videotape",
+      "artists": [{ "name": "Radiohead" }],
+      "album": { "images": [null, null, { "url": "https://placehold.co/36x36/161616/555555" }] }
+    },
+    {
+      "id": "6",
+      "name": "Re: Stacks",
+      "artists": [{ "name": "Bon Iver" }],
+      "album": { "images": [null, null, { "url": "https://placehold.co/36x36/161616/555555" }] }
+    },
+    {
+      "id": "7",
+      "name": "Street Spirit (Fade Out)",
+      "artists": [{ "name": "Radiohead" }],
+      "album": { "images": [null, null, { "url": "https://placehold.co/36x36/161616/555555" }] }
+    },
+    {
+      "id": "8",
+      "name": "Wish You Were Here",
+      "artists": [{ "name": "Pink Floyd" }],
+      "album": { "images": [null, null, { "url": "https://placehold.co/36x36/161616/555555" }] }
+    },
+    {
+      "id": "9",
+      "name": "Comfortably Numb",
+      "artists": [{ "name": "Pink Floyd" }],
+      "album": { "images": [null, null, { "url": "https://placehold.co/36x36/161616/555555" }] }
+    },
+    {
+      "id": "10",
+      "name": "Blood Bank",
+      "artists": [{ "name": "Bon Iver" }],
+      "album": { "images": [null, null, { "url": "https://placehold.co/36x36/161616/555555" }] }
+    }
+  ],
+  "mood": {
+    "mood": "melancholic",
+    "description": "Your recent listening has a distinctly introspective and melancholic tone, anchored by Radiohead's hauntingly sparse closer 'Motion Picture Soundtrack' and Bon Iver's raw, wintry folk. Pink Floyd's atmospheric classics deepen the reflective mood, painting a picture of someone lost in thought.",
+    "emoji": "🌧️",
+    "color": "#7c9cbf"
+  },
+  "artists": [
+    {
+      "id": "a1",
+      "name": "Radiohead",
+      "genres": ["art rock", "alternative rock"],
+      "images": [null, null, { "url": "https://placehold.co/36x36/161616/555555" }]
+    },
+    {
+      "id": "a2",
+      "name": "Bon Iver",
+      "genres": ["indie folk", "chamber pop"],
+      "images": [null, null, { "url": "https://placehold.co/36x36/161616/555555" }]
+    },
+    {
+      "id": "a3",
+      "name": "Pink Floyd",
+      "genres": ["progressive rock", "psychedelic rock"],
+      "images": [null, null, { "url": "https://placehold.co/36x36/161616/555555" }]
+    },
+    {
+      "id": "a4",
+      "name": "The National",
+      "genres": ["indie rock", "chamber pop"],
+      "images": [null, null, { "url": "https://placehold.co/36x36/161616/555555" }]
+    },
+    {
+      "id": "a5",
+      "name": "Nick Cave & the Bad Seeds",
+      "genres": ["post-punk", "gothic rock"],
+      "images": [null, null, { "url": "https://placehold.co/36x36/161616/555555" }]
+    }
+  ]
+}

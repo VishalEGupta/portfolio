@@ -102,6 +102,7 @@ const styles = {
 export default function Spotify() {
   const isMobile = useIsMobile()
   const [data, setData] = useState(null)
+  const [mood, setMood] = useState(null)
 
   useEffect(() => {
     // DEV: handle OAuth callback
@@ -112,7 +113,10 @@ export default function Spotify() {
     }
     fetch('/portfolio/spotify-data.json')
       .then(r => r.ok ? r.json() : null)
-      .then(d => setData(d))
+      .then(d => {
+        setData(d)
+        if (d?.mood) setMood(d.mood)
+      })
       .catch(() => {})
   }, [])
 
@@ -145,6 +149,26 @@ export default function Spotify() {
   return (
     <section id="spotify" style={sectionStyle}>
       <p style={styles.label}>Spotify</p>
+      {mood && (
+        <div style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '16px',
+          backgroundColor: '#161616',
+          border: `1px solid ${mood.color}33`,
+          borderLeft: `3px solid ${mood.color}`,
+          borderRadius: '6px',
+          padding: '16px 20px',
+          marginBottom: '32px',
+          maxWidth: '700px',
+        }}>
+          <span style={{ fontSize: '28px', lineHeight: 1, flexShrink: 0 }}>{mood.emoji}</span>
+          <div>
+            <p style={{ fontSize: '14px', fontWeight: 600, color: mood.color, margin: '0 0 6px', textTransform: 'capitalize' }}>{mood.mood}</p>
+            <p style={{ fontSize: '13px', color: '#888888', margin: 0, lineHeight: 1.6 }}>{mood.description}</p>
+          </div>
+        </div>
+      )}
       <div style={gridStyle}>
         <div>
           <p style={styles.colLabel}>Top Tracks</p>
