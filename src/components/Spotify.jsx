@@ -1,6 +1,42 @@
 import { useState, useEffect } from 'react'
 import { useIsMobile } from '../hooks/useIsMobile'
 
+// --- DEV ONLY: OAuth helpers to refresh the stored refresh token ---
+const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID
+const REDIRECT_URI = `${window.location.origin}/portfolio/callback`
+const SCOPES = 'user-top-read user-read-currently-playing'
+
+function generateCodeVerifier() {
+  const array = new Uint8Array(32)
+  crypto.getRandomValues(array)
+  return btoa(String.fromCharCode(...array)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
+}
+async function generateCodeChallenge(verifier) {
+  const data = new TextEncoder().encode(verifier)
+  const digest = await crypto.subtle.digest('SHA-256', data)
+  return btoa(String.fromCharCode(...new Uint8Array(digest))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
+}
+async function handleDevLogin() {
+  const verifier = generateCodeVerifier()
+  const challenge = await generateCodeChallenge(verifier)
+  localStorage.setItem('spotify_code_verifier', verifier)
+  const params = new URLSearchParams({ client_id: CLIENT_ID, response_type: 'code', redirect_uri: REDIRECT_URI, scope: SCOPES, code_challenge_method: 'S256', code_challenge: challenge })
+  window.location.href = `https://accounts.spotify.com/authorize?${params}`
+}
+async function handleDevCallback(code) {
+  const verifier = localStorage.getItem('spotify_code_verifier')
+  const res = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ grant_type: 'authorization_code', code, redirect_uri: REDIRECT_URI, client_id: CLIENT_ID, code_verifier: verifier }),
+  })
+  const data = await res.json()
+  if (data.refresh_token) localStorage.setItem('spotify_refresh_token', data.refresh_token)
+  localStorage.removeItem('spotify_code_verifier')
+  window.history.replaceState({}, '', '/portfolio/spotify')
+}
+// --- END DEV ONLY ---
+
 const styles = {
   label: {
     fontSize: '12px',
@@ -64,6 +100,11 @@ export default function Spotify() {
   const [data, setData] = useState(null)
 
   useEffect(() => {
+    // DEV: handle OAuth callback
+    if (import.meta.env.DEV) {
+      const code = new URLSearchParams(window.location.search).get('code')
+      if (code) { handleDevCallback(code); return }
+    }
     fetch('/portfolio/spotify-data.json')
       .then(r => r.ok ? r.json() : null)
       .then(d => setData(d))
@@ -86,7 +127,10 @@ export default function Spotify() {
     return (
       <section id="spotify" style={sectionStyle}>
         <p style={styles.label}>Spotify</p>
-        <p style={styles.muted}>loading...</p>
+        {import.meta.env.DEV
+          ? <button onClick={handleDevLogin} style={{ fontSize: '13px', color: '#1DB954', backgroundColor: 'transparent', border: '1px solid rgba(29,185,84,0.4)', borderRadius: '4px', padding: '8px 20px', cursor: 'pointer' }}>Connect Spotify (dev)</button>
+          : <p style={styles.muted}>loading...</p>
+        }
       </section>
     )
   }

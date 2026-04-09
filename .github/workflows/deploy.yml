@@ -27,6 +27,7 @@ jobs:
         env:
           SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
           SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
         run: node scripts/fetch-spotify.js
       - run: npm run build
       - run: cp dist/index.html dist/404.html

@@ -1,6 +1,7 @@
 import { writeFileSync } from 'fs'
+import { execSync } from 'child_process'
 
-const { SPOTIFY_CLIENT_ID, SPOTIFY_REFRESH_TOKEN } = process.env
+const { SPOTIFY_CLIENT_ID, SPOTIFY_REFRESH_TOKEN, GH_TOKEN } = process.env
 
 if (!SPOTIFY_CLIENT_ID || !SPOTIFY_REFRESH_TOKEN) {
   console.error('Missing SPOTIFY_CLIENT_ID or SPOTIFY_REFRESH_TOKEN')
@@ -18,13 +19,20 @@ const tokenRes = await fetch('https://accounts.spotify.com/api/token', {
 })
 
 const tokenData = await tokenRes.json()
-console.log('Token response:', JSON.stringify(tokenData))
-
-const { access_token } = tokenData
+const { access_token, refresh_token } = tokenData
 
 if (!access_token) {
-  console.error('Failed to get access token')
+  console.error('Token exchange failed:', tokenData.error, tokenData.error_description)
   process.exit(1)
+}
+
+// Rotate refresh token if Spotify issued a new one
+if (refresh_token && GH_TOKEN) {
+  execSync(
+    `gh secret set SPOTIFY_REFRESH_TOKEN --body "${refresh_token}" --repo VishalEGupta/portfolio`,
+    { env: { ...process.env, GH_TOKEN } }
+  )
+  console.log('Rotated refresh token')
 }
 
 async function get(endpoint) {

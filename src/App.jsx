@@ -5,7 +5,8 @@ import Spotify from './components/Spotify'
 import About from './components/About'
 import Contact from './components/Contact'
 
-const isSpotifyPage = window.location.pathname.startsWith('/portfolio/spotify')
+const isSpotifyPage = window.location.pathname.startsWith('/portfolio/spotify') ||
+  window.location.pathname.endsWith('/callback')
 
 export default function App() {
   if (isSpotifyPage) {
