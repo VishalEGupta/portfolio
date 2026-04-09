@@ -17,7 +17,10 @@ const tokenRes = await fetch('https://accounts.spotify.com/api/token', {
   }),
 })
 
-const { access_token } = await tokenRes.json()
+const tokenData = await tokenRes.json()
+console.log('Token response:', JSON.stringify(tokenData))
+
+const { access_token } = tokenData
 
 if (!access_token) {
   console.error('Failed to get access token')
