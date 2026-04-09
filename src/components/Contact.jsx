@@ -1,6 +1,6 @@
 const styles = {
   section: {
-    padding: '80px 48px 120px',
+    padding: '60px 48px',
     borderTop: '1px solid #1e1e1e',
   },
   label: {
@@ -30,8 +30,8 @@ export default function Contact() {
     <section id="contact" style={styles.section}>
       <p style={styles.label}>Contact</p>
       <h2 style={styles.heading}>Always up for interesting conversations.</h2>
-      <a href="mailto:hello@vishalgupta.dev" style={styles.email}>
-        hello@vishalgupta.dev
+      <a href="mailto:vishal.e.gupta@gmail.com" style={styles.email}>
+        vishal.e.gupta@gmail.com
       </a>
     </section>
   )
