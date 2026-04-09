@@ -1,8 +1,6 @@
+import { useIsMobile } from '../hooks/useIsMobile'
+
 const styles = {
-  section: {
-    padding: '60px 48px',
-    borderTop: '1px solid #1e1e1e',
-  },
   label: {
     fontSize: '12px',
     letterSpacing: '0.12em',
@@ -26,8 +24,9 @@ const styles = {
 }
 
 export default function Contact() {
+  const isMobile = useIsMobile()
   return (
-    <section id="contact" style={styles.section}>
+    <section id="contact" style={{ padding: isMobile ? '40px 24px' : '60px 48px', borderTop: '1px solid #1e1e1e' }}>
       <p style={styles.label}>Contact</p>
       <h2 style={styles.heading}>Always up for interesting conversations.</h2>
       <a href="mailto:vishal.e.gupta@gmail.com" style={styles.email}>

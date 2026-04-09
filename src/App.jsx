@@ -5,13 +5,23 @@ import Spotify from './components/Spotify'
 import About from './components/About'
 import Contact from './components/Contact'
 
+const isSpotifyPage = window.location.pathname.startsWith('/portfolio/spotify')
+
 export default function App() {
+  if (isSpotifyPage) {
+    return (
+      <div>
+        <Nav />
+        <Spotify />
+      </div>
+    )
+  }
+
   return (
     <div>
       <Nav />
       <Hero />
       <Projects />
-      <Spotify />
       <About />
       <Contact />
     </div>

@@ -1,8 +1,6 @@
+import { useIsMobile } from '../hooks/useIsMobile'
+
 const styles = {
-  section: {
-    padding: '80px 48px',
-    borderTop: '1px solid #1e1e1e',
-  },
   label: {
     fontSize: '12px',
     letterSpacing: '0.12em',
@@ -21,6 +19,8 @@ const styles = {
     padding: '28px',
     textAlign: 'left',
     border: '1px solid #1e1e1e',
+    textDecoration: 'none',
+    display: 'block',
   },
   cardTitle: {
     fontSize: '16px',
@@ -48,22 +48,6 @@ const styles = {
     borderRadius: '4px',
     padding: '3px 8px',
   },
-  comingSoon: {
-    fontSize: '11px',
-    letterSpacing: '0.06em',
-    color: '#555555',
-    backgroundColor: '#1e1e1e',
-    borderRadius: '4px',
-    padding: '3px 8px',
-    marginLeft: 'auto',
-    display: 'inline-block',
-  },
-  cardHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: '10px',
-  },
 }
 
 const projects = [
@@ -71,29 +55,36 @@ const projects = [
     title: 'This site',
     description: 'Personal portfolio built with React and Vite. Deployed via GitHub Pages.',
     tags: ['React', 'Vite', 'GitHub Pages'],
-    comingSoon: false,
+    href: null,
+  },
+  {
+    title: 'Spotify dashboard',
+    description: 'A live view of my top tracks and artists based on recent listening.',
+    tags: ['React', 'Spotify API'],
+    href: '/portfolio/spotify',
   },
 ]
 
 export default function Projects() {
+  const isMobile = useIsMobile()
   return (
-    <section id="projects" style={styles.section}>
+    <section id="projects" style={{ padding: isMobile ? '40px 24px' : '60px 48px', borderTop: '1px solid #1e1e1e' }}>
       <p style={styles.label}>Projects</p>
       <div style={styles.grid}>
-        {projects.map((p) => (
-          <div key={p.title} style={styles.card}>
-            <div style={styles.cardHeader}>
+        {projects.map((p) => {
+          const inner = (
+            <>
               <h3 style={styles.cardTitle}>{p.title}</h3>
-              {p.comingSoon && <span style={styles.comingSoon}>coming soon</span>}
-            </div>
-            <p style={styles.cardDesc}>{p.description}</p>
-            <div style={styles.tags}>
-              {p.tags.map((t) => (
-                <span key={t} style={styles.tag}>{t}</span>
-              ))}
-            </div>
-          </div>
-        ))}
+              <p style={styles.cardDesc}>{p.description}</p>
+              <div style={styles.tags}>
+                {p.tags.map(t => <span key={t} style={styles.tag}>{t}</span>)}
+              </div>
+            </>
+          )
+          return p.href
+            ? <a key={p.title} href={p.href} style={styles.card}>{inner}</a>
+            : <div key={p.title} style={styles.card}>{inner}</div>
+        })}
       </div>
     </section>
   )

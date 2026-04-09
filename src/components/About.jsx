@@ -1,8 +1,6 @@
+import { useIsMobile } from '../hooks/useIsMobile'
+
 const styles = {
-  section: {
-    padding: '80px 48px',
-    borderTop: '1px solid #1e1e1e',
-  },
   label: {
     fontSize: '12px',
     letterSpacing: '0.12em',
@@ -26,8 +24,9 @@ const styles = {
 }
 
 export default function About() {
+  const isMobile = useIsMobile()
   return (
-    <section id="about" style={styles.section}>
+    <section id="about" style={{ padding: isMobile ? '40px 24px' : '60px 48px', borderTop: '1px solid #1e1e1e' }}>
       <p style={styles.label}>About</p>
       <p style={styles.body}>
         I'm based in Houston, building software and data tools. I studied Mechanical Engineering and CS at UT Austin.

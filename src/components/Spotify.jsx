@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 const styles = {
-  section: {
-    padding: '60px 48px',
-    borderTop: '1px solid #1e1e1e',
-  },
   label: {
     fontSize: '12px',
     letterSpacing: '0.12em',
@@ -12,11 +9,9 @@ const styles = {
     color: '#555555',
     marginBottom: '24px',
   },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: '40px',
-    maxWidth: '700px',
+  muted: {
+    fontSize: '14px',
+    color: '#555555',
   },
   colLabel: {
     fontSize: '11px',
@@ -65,6 +60,7 @@ const styles = {
 }
 
 export default function Spotify() {
+  const isMobile = useIsMobile()
   const [data, setData] = useState(null)
 
   useEffect(() => {
@@ -74,14 +70,33 @@ export default function Spotify() {
       .catch(() => {})
   }, [])
 
-  if (!data) return null
+  const sectionStyle = {
+    padding: isMobile ? '40px 24px' : '60px 48px',
+    borderTop: '1px solid #1e1e1e',
+  }
+
+  const gridStyle = {
+    display: 'grid',
+    gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+    gap: isMobile ? '32px' : '40px',
+    maxWidth: '700px',
+  }
+
+  if (!data) {
+    return (
+      <section id="spotify" style={sectionStyle}>
+        <p style={styles.label}>Spotify</p>
+        <p style={styles.muted}>loading...</p>
+      </section>
+    )
+  }
 
   const { tracks, artists } = data
 
   return (
-    <section id="spotify" style={styles.section}>
+    <section id="spotify" style={sectionStyle}>
       <p style={styles.label}>Spotify</p>
-      <div style={styles.grid}>
+      <div style={gridStyle}>
         <div>
           <p style={styles.colLabel}>Top Tracks</p>
           {tracks.map((t, i) => (
