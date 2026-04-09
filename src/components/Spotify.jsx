@@ -145,6 +145,7 @@ export default function Spotify() {
   }
 
   const { tracks, artists } = data
+  const moodColor = /^#[0-9a-fA-F]{6}$/.test(mood?.color) ? mood.color : '#7c9cbf'
 
   return (
     <section id="spotify" style={sectionStyle}>
@@ -155,8 +156,8 @@ export default function Spotify() {
           alignItems: 'flex-start',
           gap: '16px',
           backgroundColor: '#161616',
-          border: `1px solid ${mood.color}33`,
-          borderLeft: `3px solid ${mood.color}`,
+          border: `1px solid ${moodColor}33`,
+          borderLeft: `3px solid ${moodColor}`,
           borderRadius: '6px',
           padding: '16px 20px',
           marginBottom: '32px',
@@ -164,7 +165,7 @@ export default function Spotify() {
         }}>
           <span style={{ fontSize: '28px', lineHeight: 1, flexShrink: 0 }}>{mood.emoji}</span>
           <div>
-            <p style={{ fontSize: '14px', fontWeight: 600, color: mood.color, margin: '0 0 6px', textTransform: 'capitalize' }}>{mood.mood}</p>
+            <p style={{ fontSize: '14px', fontWeight: 600, color: moodColor, margin: '0 0 6px', textTransform: 'capitalize' }}>{mood.mood}</p>
             <p style={{ fontSize: '13px', color: '#888888', margin: 0, lineHeight: 1.6 }}>{mood.description}</p>
           </div>
         </div>

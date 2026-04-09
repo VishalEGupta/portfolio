@@ -29,8 +29,8 @@ if (!access_token) {
 // Rotate refresh token if Spotify issued a new one
 if (refresh_token && GH_TOKEN) {
   execSync(
-    `gh secret set SPOTIFY_REFRESH_TOKEN --body "${refresh_token}" --repo VishalEGupta/portfolio`,
-    { env: { ...process.env, GH_TOKEN } }
+    'gh secret set SPOTIFY_REFRESH_TOKEN --body @- --repo VishalEGupta/my-portfolio-v2',
+    { input: refresh_token, env: { ...process.env, GH_TOKEN } }
   )
   console.log('Rotated refresh token')
 }
