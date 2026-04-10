@@ -8,6 +8,10 @@ if (!SPOTIFY_CLIENT_ID || !SPOTIFY_REFRESH_TOKEN) {
   process.exit(1)
 }
 
+console.log('client_id prefix:', SPOTIFY_CLIENT_ID.slice(0, 8))
+console.log('refresh_token prefix:', SPOTIFY_REFRESH_TOKEN.slice(0, 8))
+console.log('has client_secret:', !!SPOTIFY_CLIENT_SECRET)
+
 // Support both PKCE (no secret) and Authorization Code flow (with secret)
 const tokenBody = {
   grant_type: 'refresh_token',
@@ -27,6 +31,7 @@ const { access_token, refresh_token } = tokenData
 
 if (!access_token) {
   console.error('Token exchange failed:', tokenData.error, tokenData.error_description)
+  console.error('Full response:', JSON.stringify(tokenData))
   process.exit(1)
 }
 
