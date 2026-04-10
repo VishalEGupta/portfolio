@@ -38,12 +38,8 @@ if (!CLIENT_ID) {
   process.exit(1)
 }
 
-const usePKCE = !CLIENT_SECRET
-if (usePKCE) {
-  console.log('No SPOTIFY_CLIENT_SECRET found — using PKCE flow')
-} else {
-  console.log('Using Authorization Code flow with client secret')
-}
+const usePKCE = true
+console.log('Using PKCE flow')
 
 // PKCE helpers (only used when no client secret)
 const verifier = randomBytes(32).toString('base64url')

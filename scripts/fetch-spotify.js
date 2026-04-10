@@ -18,7 +18,7 @@ const tokenBody = {
   refresh_token: SPOTIFY_REFRESH_TOKEN,
   client_id: SPOTIFY_CLIENT_ID,
 }
-if (SPOTIFY_CLIENT_SECRET) tokenBody.client_secret = SPOTIFY_CLIENT_SECRET
+// PKCE refresh: client_id only, no client_secret
 
 const tokenRes = await fetch('https://accounts.spotify.com/api/token', {
   method: 'POST',
