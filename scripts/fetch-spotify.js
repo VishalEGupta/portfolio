@@ -1,21 +1,25 @@
 import { writeFileSync } from 'fs'
 import { execSync } from 'child_process'
 
-const { SPOTIFY_CLIENT_ID, SPOTIFY_REFRESH_TOKEN, GH_TOKEN, ANTHROPIC_API_KEY } = process.env
+const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN, GH_TOKEN, ANTHROPIC_API_KEY } = process.env
 
 if (!SPOTIFY_CLIENT_ID || !SPOTIFY_REFRESH_TOKEN) {
   console.error('Missing SPOTIFY_CLIENT_ID or SPOTIFY_REFRESH_TOKEN')
   process.exit(1)
 }
 
+// Support both PKCE (no secret) and Authorization Code flow (with secret)
+const tokenBody = {
+  grant_type: 'refresh_token',
+  refresh_token: SPOTIFY_REFRESH_TOKEN,
+  client_id: SPOTIFY_CLIENT_ID,
+}
+if (SPOTIFY_CLIENT_SECRET) tokenBody.client_secret = SPOTIFY_CLIENT_SECRET
+
 const tokenRes = await fetch('https://accounts.spotify.com/api/token', {
   method: 'POST',
   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-  body: new URLSearchParams({
-    grant_type: 'refresh_token',
-    refresh_token: SPOTIFY_REFRESH_TOKEN,
-    client_id: SPOTIFY_CLIENT_ID,
-  }),
+  body: new URLSearchParams(tokenBody),
 })
 
 const tokenData = await tokenRes.json()
