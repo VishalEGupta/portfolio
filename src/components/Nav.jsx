@@ -59,6 +59,7 @@ export default function Nav() {
             <a href="/portfolio/#projects" style={styles.link}>projects</a>
             <a href="/portfolio/#contact" style={styles.link}>contact</a>
             <a href="/portfolio/spotify" style={styles.link}>spotify</a>
+            <a href="/portfolio/quiz" style={styles.link}>quiz</a>
           </>
         )}
         <a href="https://github.com/VishalEGupta" target="_blank" rel="noopener noreferrer" style={styles.icon} aria-label="GitHub">

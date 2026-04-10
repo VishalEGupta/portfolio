@@ -63,6 +63,12 @@ const projects = [
     tags: ['React', 'Spotify API', 'Claude API', 'GitHub Actions'],
     href: '/portfolio/spotify',
   },
+  {
+    title: 'Board game personality quiz',
+    description: 'A branching narrative quiz set during a game night. Four choices reveal your MBTI personality type and pair you with one of 16 classic board games.',
+    tags: ['React', 'Interactive', 'MBTI', 'Branching Narrative'],
+    href: '/portfolio/quiz',
+  },
 ]
 
 export default function Projects() {
