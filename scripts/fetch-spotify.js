@@ -1,5 +1,5 @@
 import { writeFileSync } from 'fs'
-import { execSync } from 'child_process'
+import { spawnSync } from 'child_process'
 
 const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN, GH_TOKEN, ANTHROPIC_API_KEY } = process.env
 
@@ -35,13 +35,17 @@ if (!access_token) {
   process.exit(1)
 }
 
-// Rotate refresh token if Spotify issued a new one
+// Rotate refresh token if Spotify issued a new one (non-fatal if GH_PAT lacks secrets permission)
 if (refresh_token && GH_TOKEN) {
-  execSync(
-    'gh secret set SPOTIFY_REFRESH_TOKEN --body @- --repo VishalEGupta/portfolio',
-    { input: refresh_token, env: { ...process.env, GH_TOKEN } }
+  const result = spawnSync(
+    'gh', ['secret', 'set', 'SPOTIFY_REFRESH_TOKEN', '--body', refresh_token, '--repo', 'VishalEGupta/portfolio'],
+    { env: { ...process.env, GH_TOKEN }, encoding: 'utf8' }
   )
-  console.log('Rotated refresh token')
+  if (result.status === 0) {
+    console.log('Rotated refresh token')
+  } else {
+    console.warn('Could not rotate refresh token (non-fatal):', result.stderr?.trim())
+  }
 }
 
 async function get(endpoint) {
