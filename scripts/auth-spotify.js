@@ -24,6 +24,7 @@ try {
 } catch { /* no .env.local, that's fine */ }
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID
+const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET
 const GH_TOKEN = process.env.GH_TOKEN
 const PORT = 5173
 const REDIRECT_URI = `http://127.0.0.1:${PORT}/portfolio/callback`
@@ -35,18 +36,26 @@ if (!CLIENT_ID) {
   process.exit(1)
 }
 
-console.log('Using PKCE flow (client_id:', CLIENT_ID.slice(0, 8) + '...)')
+// Use Authorization Code + client_secret (stable, non-rotating tokens) when available.
+// Fall back to PKCE only if no client_secret.
+const usePKCE = !CLIENT_SECRET
+console.log(usePKCE ? 'Using PKCE flow' : 'Using Authorization Code flow (client_secret)')
 
-const verifier = randomBytes(32).toString('base64url')
-const challenge = createHash('sha256').update(verifier).digest('base64url')
+let verifier, challenge
+if (usePKCE) {
+  verifier = randomBytes(32).toString('base64url')
+  challenge = createHash('sha256').update(verifier).digest('base64url')
+}
 
 const authUrl = new URL('https://accounts.spotify.com/authorize')
 authUrl.searchParams.set('client_id', CLIENT_ID)
 authUrl.searchParams.set('response_type', 'code')
 authUrl.searchParams.set('redirect_uri', REDIRECT_URI)
 authUrl.searchParams.set('scope', SCOPES)
-authUrl.searchParams.set('code_challenge_method', 'S256')
-authUrl.searchParams.set('code_challenge', challenge)
+if (usePKCE) {
+  authUrl.searchParams.set('code_challenge_method', 'S256')
+  authUrl.searchParams.set('code_challenge', challenge)
+}
 
 // Wait for the OAuth callback
 const code = await new Promise((resolve, reject) => {
@@ -69,16 +78,21 @@ const code = await new Promise((resolve, reject) => {
 })
 
 // Exchange code for tokens
+const exchangeParams = {
+  grant_type: 'authorization_code',
+  code,
+  redirect_uri: REDIRECT_URI,
+  client_id: CLIENT_ID,
+}
+if (usePKCE) {
+  exchangeParams.code_verifier = verifier
+} else {
+  exchangeParams.client_secret = CLIENT_SECRET
+}
 const tokenRes = await fetch('https://accounts.spotify.com/api/token', {
   method: 'POST',
   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-  body: new URLSearchParams({
-    grant_type: 'authorization_code',
-    code,
-    redirect_uri: REDIRECT_URI,
-    client_id: CLIENT_ID,
-    code_verifier: verifier,
-  }),
+  body: new URLSearchParams(exchangeParams),
 })
 
 const tokenData = await tokenRes.json()
@@ -89,14 +103,16 @@ if (!tokenData.refresh_token) {
 
 // Immediately verify the refresh token works before storing it
 console.log('Verifying refresh token...')
+const verifyParams = {
+  grant_type: 'refresh_token',
+  refresh_token: tokenData.refresh_token,
+  client_id: CLIENT_ID,
+}
+if (!usePKCE) verifyParams.client_secret = CLIENT_SECRET
 const verifyRes = await fetch('https://accounts.spotify.com/api/token', {
   method: 'POST',
   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-  body: new URLSearchParams({
-    grant_type: 'refresh_token',
-    refresh_token: tokenData.refresh_token,
-    client_id: CLIENT_ID,
-  }),
+  body: new URLSearchParams(verifyParams),
 })
 
 const verifyData = await verifyRes.json()

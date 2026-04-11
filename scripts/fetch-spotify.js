@@ -12,13 +12,14 @@ console.log('client_id prefix:', SPOTIFY_CLIENT_ID.slice(0, 8))
 console.log('refresh_token prefix:', SPOTIFY_REFRESH_TOKEN.slice(0, 8))
 console.log('has client_secret:', !!SPOTIFY_CLIENT_SECRET)
 
-// Support both PKCE (no secret) and Authorization Code flow (with secret)
+// Authorization Code flow (client_secret) gives stable non-rotating tokens.
+// PKCE (no client_secret) rotates tokens on every refresh — only use as fallback.
 const tokenBody = {
   grant_type: 'refresh_token',
   refresh_token: SPOTIFY_REFRESH_TOKEN,
   client_id: SPOTIFY_CLIENT_ID,
 }
-// PKCE refresh: client_id only, no client_secret
+if (SPOTIFY_CLIENT_SECRET) tokenBody.client_secret = SPOTIFY_CLIENT_SECRET
 
 const tokenRes = await fetch('https://accounts.spotify.com/api/token', {
   method: 'POST',
@@ -35,8 +36,8 @@ if (!access_token) {
   process.exit(1)
 }
 
-// Rotate refresh token if Spotify issued a new one (non-fatal if GH_PAT lacks secrets permission)
-if (refresh_token && GH_TOKEN) {
+// Rotate refresh token only for PKCE (client_secret tokens don't rotate)
+if (refresh_token && GH_TOKEN && !SPOTIFY_CLIENT_SECRET) {
   const result = spawnSync(
     'gh', ['secret', 'set', 'SPOTIFY_REFRESH_TOKEN', '--body', refresh_token, '--repo', 'VishalEGupta/portfolio'],
     { env: { ...process.env, GH_TOKEN }, encoding: 'utf8' }
