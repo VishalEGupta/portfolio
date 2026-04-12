@@ -53,7 +53,7 @@ export const scenes = {
   q2_a: {
     type: 'question',
     chapter: 'The Fireplace',
-    progress: 28,
+    progress: 20,
     narrative:
       "Marcus is mid-story — something about a camping trip that's escalating into a full-on performance. The crew is howling. He turns to you with that look: your move. The room is watching.",
     question: 'What do you do?',
@@ -80,7 +80,7 @@ export const scenes = {
   q2_b: {
     type: 'question',
     chapter: 'The Kitchen',
-    progress: 28,
+    progress: 20,
     narrative:
       "You drift into the kitchen. Sam is leaning against the counter with a glass of wine, and when they see you, something in their face shifts — relief, maybe. \"Oh good, you're here. Can I tell you something?\"",
     question: 'How do you respond?',
@@ -107,7 +107,7 @@ export const scenes = {
   q2_c: {
     type: 'question',
     chapter: 'The Game Shelf',
-    progress: 28,
+    progress: 20,
     narrative:
       "The shelf is better than you expected — a mix of old classics and strange indie titles you've never heard of. You're halfway through reading a box when someone else wanders over and starts browsing too.",
     question: 'What catches your eye?',
@@ -134,7 +134,7 @@ export const scenes = {
   q2_d: {
     type: 'question',
     chapter: 'Backstage',
-    progress: 28,
+    progress: 20,
     narrative:
       "The host is in triage mode — timer buzzing, glass running low, a question about allergies floating around. They shoot you a grateful look. \"Thank god. Grab anything, do anything.\"",
     question: 'Where do you plug in?',
@@ -161,7 +161,7 @@ export const scenes = {
   q3_a: {
     type: 'question',
     chapter: 'The Argument',
-    progress: 46,
+    progress: 30,
     narrative:
       "The story spirals into something bigger — two people at the fireplace are suddenly arguing. Not angry, exactly, but loud. A real debate about something neither will let go of. Everyone else leans back and watches.",
     question: 'What do you do?',
@@ -169,17 +169,17 @@ export const scenes = {
       {
         text: 'Jump in — pick a side, sharpen the argument, make it a real debate',
         scores: { E: 1, T: 2, N: 1 },
-        next: 'q4',
+        next: 'q4_dynamic',
       },
       {
         text: 'Mediate — find the thing they actually agree on and name it out loud',
         scores: { F: 2, J: 1, N: 1 },
-        next: 'q4',
+        next: 'q4_dynamic',
       },
       {
         text: 'Stay quiet, watch the shape of it — you\'ll have your own opinion later',
         scores: { I: 2, T: 1, P: 1 },
-        next: 'q4',
+        next: 'q4_dynamic',
       },
     ],
   },
@@ -188,7 +188,7 @@ export const scenes = {
   q3_b: {
     type: 'question',
     chapter: 'The Confession',
-    progress: 46,
+    progress: 30,
     narrative:
       "Sam tells you something real. Not gossip — something heavy they've been carrying. They look at you, waiting. The rest of the party feels very far away.",
     question: 'How do you hold this?',
@@ -196,17 +196,17 @@ export const scenes = {
       {
         text: 'Just listen. Reflect back what you\'re hearing. Don\'t try to fix it',
         scores: { I: 1, F: 2, N: 1, P: 1 },
-        next: 'q4',
+        next: 'q4_dynamic',
       },
       {
         text: 'Share your own story — the time you felt something similar — so they don\'t feel alone',
         scores: { E: 1, F: 1, N: 1, S: 1 },
-        next: 'q4',
+        next: 'q4_dynamic',
       },
       {
         text: 'Help them think it through — ask the questions that will untangle it',
         scores: { T: 2, J: 1, N: 1 },
-        next: 'q4',
+        next: 'q4_dynamic',
       },
     ],
   },
@@ -215,7 +215,7 @@ export const scenes = {
   q3_c: {
     type: 'question',
     chapter: 'The Pick',
-    progress: 46,
+    progress: 30,
     narrative:
       "The game you chose becomes the game for the night — everyone gathers around. You realize you're the one who knows the rules best. Someone hands you the rulebook. It's your table now.",
     question: 'How do you run it?',
@@ -223,17 +223,17 @@ export const scenes = {
       {
         text: 'Explain every rule properly before starting — do it right the first time',
         scores: { S: 2, J: 2 },
-        next: 'q4',
+        next: 'q4_dynamic',
       },
       {
         text: 'Cover the basics, start playing, handle edge cases as they come up',
         scores: { N: 1, P: 2, T: 1 },
-        next: 'q4',
+        next: 'q4_dynamic',
       },
       {
         text: 'Skim the rules aloud — make it part of the fun, not a lecture',
         scores: { E: 1, F: 1, P: 1, N: 1 },
-        next: 'q4',
+        next: 'q4_dynamic',
       },
     ],
   },
@@ -242,7 +242,7 @@ export const scenes = {
   q3_d: {
     type: 'question',
     chapter: 'The Mishap',
-    progress: 46,
+    progress: 30,
     narrative:
       "Something goes wrong. A glass shatters, a dish goes sideways, a pet knocks over something it shouldn't have. Everyone looks up. The host looks like they might cry.",
     question: 'What\'s your move?',
@@ -250,17 +250,17 @@ export const scenes = {
       {
         text: 'Spring into action — fix it in thirty seconds, no big deal, no drama',
         scores: { S: 1, T: 1, J: 2 },
-        next: 'q4',
+        next: 'q4_dynamic',
       },
       {
         text: 'Crack a joke — defuse the tension, make the whole room laugh about it',
         scores: { E: 1, P: 2, F: 1 },
-        next: 'q4',
+        next: 'q4_dynamic',
       },
       {
         text: 'Improvise — turn the disaster into a story, rescue the moment with style',
         scores: { N: 2, P: 1, E: 1 },
-        next: 'q4',
+        next: 'q4_dynamic',
       },
     ],
   },
@@ -270,10 +270,10 @@ export const scenes = {
   // quiz has enough signal on the user's personality from 3 branched questions.
   // A shared Q4 simplifies balancing (one set of options to tune, not four) and
   // makes the narrative feel like it's coming back together after diverging.
-  q4: {
+  q8: {
     type: 'question',
     chapter: 'The Final Game',
-    progress: 68,
+    progress: 80,
     narrative:
       "Somehow it's midnight. The group has landed on one last game — the one everyone's going to remember. Someone half-jokes, \"Loser has to make breakfast.\" The table tightens up. It's on.",
     question: 'How do you play?',
@@ -281,26 +281,26 @@ export const scenes = {
       {
         text: 'To win. Read the table, exploit the weak spots, be ruthless about it',
         scores: { T: 2, J: 1, S: 1 },
-        next: 'q5',
+        next: 'q9',
       },
       {
         text: 'For the bit. It\'s about the stories we\'ll tell tomorrow, not the score',
         scores: { F: 1, P: 2, E: 1 },
-        next: 'q5',
+        next: 'q9',
       },
       {
         text: 'Unpredictably. Go for the play nobody sees coming. High risk, high reward',
         scores: { N: 2, P: 1, E: 1 },
-        next: 'q5',
+        next: 'q9',
       },
     ],
   },
 
   // ─── Q5 — The End of the Night (shared) ────────────────────
-  q5: {
+  q9: {
     type: 'question',
     chapter: 'The End of the Night',
-    progress: 86,
+    progress: 90,
     narrative:
       "It's late. People are stretching, yawning, starting to gather their things. The night is ending, and you feel that particular game-night feeling — full, tired, weirdly happy.",
     question: 'How do you leave?',
