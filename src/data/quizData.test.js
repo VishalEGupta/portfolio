@@ -156,10 +156,10 @@ describe('path simulation — confirmed misclassification fixes', () => {
       ['q2_a', 0],   // E:2, S:1, P:1
       ['q3_a', 0],   // E:1, T:2, N:1  → T=2, F=1 → CD track
       ['q4_cd', 0],  // T:2, E:1
-      ['q5_cd', 0],  // S:2, T:1
+      ['q5_cd', 1],  // N:2, I:1  ← pattern = N signal (was index 0 = S)
       ['q6_cd', 0],  // E:2, T:1
       ['q7_cd', 0],  // J:2, T:1
-      ['q8', 0],     // T:2, J:1, S:1
+      ['q8', 2],     // N:2, P:1, E:1  ← unpredictable play = N (was index 0 = S)
       ['q9', 0],     // J:2, I:1, T:1
     ])
     expect(result).toBe('ENTJ')

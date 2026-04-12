@@ -422,7 +422,7 @@ export const scenes = {
     options: [
       {
         text: 'The data — what\'s actually happened, what you know for certain is still in play',
-        scores: { N: 2, T: 1 },
+        scores: { S: 2, T: 1 },
         next: 'q6_cd',
       },
       {
@@ -451,7 +451,7 @@ export const scenes = {
     options: [
       {
         text: 'In it — you\'re replaying the key moments out loud with anyone who\'ll engage',
-        scores: { E: 2, N: 1 },
+        scores: { E: 2, T: 1 },
         next: 'q7_cd',
       },
       {
