@@ -265,6 +265,237 @@ export const scenes = {
     ],
   },
 
+  // ─── Q4_AB — The First Move (AB track: F ≥ T) ─────────────────
+  // Target: S/N — F-path framing accidentally scores N; need a direct
+  // concrete-vs-abstract probe to separate ISFx from INFx users.
+  q4_ab: {
+    type: 'question',
+    chapter: 'The First Move',
+    progress: 40,
+    narrative:
+      "The game is underway. Pieces placed, first moves made. It's almost your turn. You find yourself already in your head.",
+    question: 'What are you actually thinking about?',
+    options: [
+      {
+        text: 'The exact state of the board — what\'s been played, what\'s left, what you know for certain',
+        scores: { S: 2, J: 1 },
+        next: 'q5_ab',
+      },
+      {
+        text: 'The shape of it — how this could unfold, what patterns you\'re already reading',
+        scores: { N: 2, I: 1 },
+        next: 'q5_ab',
+      },
+      {
+        text: 'The other players — you\'re watching people more than the board',
+        scores: { F: 2, E: 1 },
+        next: 'q5_ab',
+      },
+    ],
+  },
+
+  // ─── Q5_AB — The Break (AB track) ─────────────────────────────
+  // Target: E/I — kitchen path accumulates I:4+ by Q3 with no E signal.
+  // This discriminates ENFP from INFP, ESFJ from ISFJ.
+  q5_ab: {
+    type: 'question',
+    chapter: 'The Break',
+    progress: 50,
+    narrative:
+      "Someone calls a pause — drinks need refilling, a timer needs resetting. The game stops for a moment. The room breathes.",
+    question: 'Where do you go?',
+    options: [
+      {
+        text: 'Back into the group — you want to be in the middle of whatever conversation starts up',
+        scores: { E: 2, F: 1 },
+        next: 'q6_ab',
+      },
+      {
+        text: 'You stay put, running the last few rounds through your head',
+        scores: { I: 2, N: 1 },
+        next: 'q6_ab',
+      },
+      {
+        text: 'You find one person and have an actual conversation — not the whole room, just one',
+        scores: { I: 1, F: 2 },
+        next: 'q6_ab',
+      },
+    ],
+  },
+
+  // ─── Q6_AB — The Call (AB track) ──────────────────────────────
+  // Target: T/F — even F-dominant paths can tie on T/F if one
+  // analytical answer slipped in. This reinforces or corrects.
+  q6_ab: {
+    type: 'question',
+    chapter: 'The Call',
+    progress: 60,
+    narrative:
+      "Something ambiguous happens — a move that might be bending the rules. It changes the outcome. No one's sure if it was legal. Eyes go to you.",
+    question: 'What matters most to you right now?',
+    options: [
+      {
+        text: 'Getting it right — you look up the rule, you play it straight, fair is fair',
+        scores: { T: 2, J: 1 },
+        next: 'q7_ab',
+      },
+      {
+        text: 'Keeping the energy — it\'s close enough, let it go, not worth the friction',
+        scores: { F: 1, P: 2 },
+        next: 'q7_ab',
+      },
+      {
+        text: 'Being honest — you say something quietly to the person, give them the chance to call it themselves',
+        scores: { F: 2, I: 1 },
+        next: 'q7_ab',
+      },
+    ],
+  },
+
+  // ─── Q7_AB — Last Round (AB track) ────────────────────────────
+  // Target: J/P — least-covered axis on AB paths before the shared questions.
+  q7_ab: {
+    type: 'question',
+    chapter: 'Last Round',
+    progress: 70,
+    narrative:
+      "The game wraps up. Someone immediately suggests one more. It's late, but there's still something in the air.",
+    question: 'What do you do?',
+    options: [
+      {
+        text: 'Call it — you know when something is done, and you\'re good at endings',
+        scores: { J: 2, I: 1 },
+        next: 'q8',
+      },
+      {
+        text: 'Say yes without thinking — you don\'t want this to be over',
+        scores: { P: 2, E: 1 },
+        next: 'q8',
+      },
+      {
+        text: 'Read the room first — you\'ll match whatever the group actually needs',
+        scores: { F: 2, P: 1 },
+        next: 'q8',
+      },
+    ],
+  },
+
+  // ─── Q4_CD — The Opponent (CD track: T > F) ───────────────────
+  // Target: T/F — both CD paths score T heavily but rarely probe F.
+  // Need a logic-vs-values moment to separate T from F on this track.
+  q4_cd: {
+    type: 'question',
+    chapter: 'The Opponent',
+    progress: 40,
+    narrative:
+      "One player at the table has locked in — clearly the strongest, methodically one move ahead of everyone else. They're playing to win. For real.",
+    question: 'How do you respond?',
+    options: [
+      {
+        text: 'You lock in too. This is exactly what you came for — a real game',
+        scores: { T: 2, E: 1 },
+        next: 'q5_cd',
+      },
+      {
+        text: 'You start rooting for the underdog — someone should push back against them',
+        scores: { F: 2, E: 1 },
+        next: 'q5_cd',
+      },
+      {
+        text: 'You find yourself more interested in watching their strategy than beating them',
+        scores: { N: 2, I: 1 },
+        next: 'q5_cd',
+      },
+    ],
+  },
+
+  // ─── Q5_CD — The Pivot (CD track) ─────────────────────────────
+  // Target: S/N — path C is NTP-heavy, path D is STJ-heavy.
+  // After merging at q4_cd, this confirms or corrects the S/N call.
+  q5_cd: {
+    type: 'question',
+    chapter: 'The Pivot',
+    progress: 50,
+    narrative:
+      "You have to make a move. You've been tracking this game carefully. The moment is here.",
+    question: 'What do you trust?',
+    options: [
+      {
+        text: 'The data — what\'s actually happened, what you know for certain is still in play',
+        scores: { N: 2, T: 1 },
+        next: 'q6_cd',
+      },
+      {
+        text: 'The pattern — you\'ve been reading how the table plays, and you trust that read',
+        scores: { N: 2, I: 1 },
+        next: 'q6_cd',
+      },
+      {
+        text: 'Your instinct — something about this specific moment is telling you',
+        scores: { N: 1, P: 2 },
+        next: 'q6_cd',
+      },
+    ],
+  },
+
+  // ─── Q6_CD — Between Rounds (CD track) ────────────────────────
+  // Target: E/I — path C scores I:2 upfront; path D scores E:1.
+  // After 5+ questions together, need a direct E/I probe to separate them.
+  q6_cd: {
+    type: 'question',
+    chapter: 'Between Rounds',
+    progress: 60,
+    narrative:
+      "The first game ends. People stretch, argue about what just happened. The room gets loud.",
+    question: 'Where are you in this?',
+    options: [
+      {
+        text: 'In it — you\'re replaying the key moments out loud with anyone who\'ll engage',
+        scores: { E: 2, N: 1 },
+        next: 'q7_cd',
+      },
+      {
+        text: 'Elsewhere — you\'re already mentally preparing for the next game',
+        scores: { I: 2, N: 1 },
+        next: 'q7_cd',
+      },
+      {
+        text: 'Watching — you\'re curious how other people experienced it differently',
+        scores: { I: 1, F: 2 },
+        next: 'q7_cd',
+      },
+    ],
+  },
+
+  // ─── Q7_CD — The Endgame (CD track) ───────────────────────────
+  // Target: J/P — path D starts with J:2 head start; path C can land
+  // anywhere. Need a direct discriminator before shared final questions.
+  q7_cd: {
+    type: 'question',
+    chapter: 'The Endgame',
+    progress: 70,
+    narrative:
+      "Three moves from now, this game is decided. You can see it clearly. You know exactly what you need to do.",
+    question: 'What do you actually do?',
+    options: [
+      {
+        text: 'Execute — you mapped it out, you follow through without second-guessing',
+        scores: { J: 2, T: 1 },
+        next: 'q8',
+      },
+      {
+        text: 'Adapt — something shifted and the better play is different from your plan',
+        scores: { P: 2, N: 1 },
+        next: 'q8',
+      },
+      {
+        text: 'Go for the unexpected move — risky, probably brilliant, definitely memorable',
+        scores: { N: 2, P: 1 },
+        next: 'q8',
+      },
+    ],
+  },
+
   // ─── Q4 — The Final Game (shared) ──────────────────────────
   // All four Q3 branches (q3_a through q3_d) converge HERE. By this point, the
   // quiz has enough signal on the user's personality from 3 branched questions.
