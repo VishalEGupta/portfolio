@@ -266,6 +266,10 @@ export const scenes = {
   },
 
   // ─── Q4 — The Final Game (shared) ──────────────────────────
+  // All four Q3 branches (q3_a through q3_d) converge HERE. By this point, the
+  // quiz has enough signal on the user's personality from 3 branched questions.
+  // A shared Q4 simplifies balancing (one set of options to tune, not four) and
+  // makes the narrative feel like it's coming back together after diverging.
   q4: {
     type: 'question',
     chapter: 'The Final Game',
@@ -329,10 +333,18 @@ export const scenes = {
   result: { type: 'result' },
 }
 
-// Compute MBTI type from accumulated scores.
-// Tiebreakers favor E, S, T, J — these are the statistically more common poles.
-export function computeMBTI(scores) {
-  const pick = (a, b) => ((scores[a] || 0) >= (scores[b] || 0) ? a : b)
+export function computeMBTI(scores, history = []) {
+  const pick = (a, b) => {
+    const sa = scores[a] || 0
+    const sb = scores[b] || 0
+    if (sa !== sb) return sa > sb ? a : b
+    // True tie: winner is whichever dimension appeared in more questions
+    const countA = history.filter(s => (s[a] || 0) > 0).length
+    const countB = history.filter(s => (s[b] || 0) > 0).length
+    if (countA !== countB) return countA > countB ? a : b
+    // Still tied: fall back to statistically common pole (E, S, T, J)
+    return a
+  }
   return pick('E', 'I') + pick('S', 'N') + pick('T', 'F') + pick('J', 'P')
 }
 
