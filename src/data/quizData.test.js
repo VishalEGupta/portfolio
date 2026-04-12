@@ -48,3 +48,120 @@ describe('computeMBTI — trajectory tiebreaker', () => {
     expect(computeMBTI({}, [])).toBe('ESTJ')
   })
 })
+
+// ─── Path simulation ───────────────────────────────────────────────────────
+//
+// simulatePath takes an ordered array of [sceneKey, optionIndex] pairs and
+// walks the scene graph, accumulating scores exactly as Quiz.jsx does.
+// Does NOT call Quiz.jsx — pure scene graph traversal.
+
+function simulatePath(steps) {
+  let scoreHistory = []
+
+  for (const [sceneKey, optionIndex] of steps) {
+    const scene = scenes[sceneKey]
+    if (!scene) throw new Error(`Unknown scene: ${sceneKey}`)
+    const option = scene.options[optionIndex]
+    if (!option) throw new Error(`No option ${optionIndex} in scene ${sceneKey}`)
+    scoreHistory = [...scoreHistory, option.scores || {}]
+  }
+
+  const totalScores = scoreHistory.reduce((acc, s) => {
+    for (const k in s) acc[k] = (acc[k] || 0) + s[k]
+    return acc
+  }, {})
+
+  return computeMBTI(totalScores, scoreHistory)
+}
+
+describe('path simulation — confirmed misclassification fixes', () => {
+  test('ENFP fireplace path → ENFP (not ENTP)', () => {
+    const result = simulatePath([
+      ['q1', 0],     // E:2, S:1, F:1
+      ['q2_a', 1],   // N:2, F:1, I:1
+      ['q3_a', 1],   // F:2, J:1, N:1  → F=4, T=0 → AB track
+      ['q4_ab', 1],  // N:2, I:1
+      ['q5_ab', 0],  // E:2, F:1
+      ['q6_ab', 1],  // F:1, P:2
+      ['q7_ab', 1],  // P:2, E:1
+      ['q8', 1],     // F:1, P:2, E:1
+      ['q9', 1],     // E:2, F:1, P:1
+    ])
+    expect(result).toBe('ENFP')
+  })
+
+  test('ENFP kitchen path → ENFP (not INFP)', () => {
+    const result = simulatePath([
+      ['q1', 1],     // I:1, S:1, F:2
+      ['q2_b', 2],   // I:2, F:1, N:1
+      ['q3_b', 0],   // I:1, F:2, N:1, P:1  → F=5, T=0 → AB track
+      ['q4_ab', 1],  // N:2, I:1
+      ['q5_ab', 0],  // E:2, F:1  ← counteracts I accumulation
+      ['q6_ab', 1],  // F:1, P:2
+      ['q7_ab', 1],  // P:2, E:1
+      ['q8', 1],     // F:1, P:2, E:1
+      ['q9', 1],     // E:2, F:1, P:1
+    ])
+    expect(result).toBe('ENFP')
+  })
+
+  test('INTJ game shelf path → INTJ (not ISTJ)', () => {
+    const result = simulatePath([
+      ['q1', 2],     // I:2, N:1, T:1
+      ['q2_c', 0],   // N:2, P:1, T:1
+      ['q3_c', 0],   // S:2, J:2  → T=2, F=0 → CD track
+      ['q4_cd', 2],  // N:2, I:1
+      ['q5_cd', 1],  // N:2, I:1
+      ['q6_cd', 1],  // I:2, N:1
+      ['q7_cd', 0],  // J:2, T:1
+      ['q8', 0],     // T:2, J:1, S:1
+      ['q9', 0],     // J:2, I:1, T:1
+    ])
+    expect(result).toBe('INTJ')
+  })
+
+  test('ISFJ kitchen path → ISFJ (not INFJ)', () => {
+    const result = simulatePath([
+      ['q1', 1],     // I:1, S:1, F:2
+      ['q2_b', 0],   // I:1, F:2, J:1
+      ['q3_b', 0],   // I:1, F:2, N:1, P:1  → F=6, T=0 → AB track
+      ['q4_ab', 0],  // S:2, J:1  ← concrete/S signal
+      ['q5_ab', 2],  // I:1, F:2
+      ['q6_ab', 2],  // F:2, I:1
+      ['q7_ab', 0],  // J:2, I:1
+      ['q8', 0],     // T:2, J:1, S:1
+      ['q9', 0],     // J:2, I:1, T:1
+    ])
+    expect(result).toBe('ISFJ')
+  })
+
+  test('INFP kitchen path → INFP (regression)', () => {
+    const result = simulatePath([
+      ['q1', 1],     // I:1, S:1, F:2
+      ['q2_b', 2],   // I:2, F:1, N:1
+      ['q3_b', 0],   // I:1, F:2, N:1, P:1  → AB track
+      ['q4_ab', 1],  // N:2, I:1
+      ['q5_ab', 2],  // I:1, F:2  ← introverted choice
+      ['q6_ab', 2],  // F:2, I:1
+      ['q7_ab', 2],  // F:2, P:1
+      ['q8', 2],     // N:2, P:1, E:1
+      ['q9', 2],     // I:1, N:2, F:1
+    ])
+    expect(result).toBe('INFP')
+  })
+
+  test('ENTJ path → ENTJ (regression)', () => {
+    const result = simulatePath([
+      ['q1', 0],     // E:2, S:1, F:1
+      ['q2_a', 0],   // E:2, S:1, P:1
+      ['q3_a', 0],   // E:1, T:2, N:1  → T=2, F=1 → CD track
+      ['q4_cd', 0],  // T:2, E:1
+      ['q5_cd', 0],  // S:2, T:1
+      ['q6_cd', 0],  // E:2, T:1
+      ['q7_cd', 0],  // J:2, T:1
+      ['q8', 0],     // T:2, J:1, S:1
+      ['q9', 0],     // J:2, I:1, T:1
+    ])
+    expect(result).toBe('ENTJ')
+  })
+})
