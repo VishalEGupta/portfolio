@@ -2,29 +2,48 @@ import { useState, useEffect } from 'react'
 import { useIsMobile } from '../hooks/useIsMobile'
 import { scenes, results, computeMBTI } from '../data/quizData'
 
+// Single source of truth for the fade-out duration (ms).
+// Used in both the CSS transition (below) and the setTimeout delays so they
+// stay in sync — change this one constant to speed up or slow down all transitions.
 const TRANSITION_MS = 400
 
 export default function Quiz() {
   const isMobile = useIsMobile()
-  const [currentScene, setCurrentScene] = useState('intro')
-  const [path, setPath] = useState([])
+  const [currentScene, setCurrentScene] = useState('intro')  // Which scene key is active
+  const [path, setPath] = useState([])                        // History of visited scene keys (for Back button)
+  // scoreHistory stores each answered question's scores as a separate object.
+  // This makes handleBack trivially correct: just pop the last entry to undo.
+  // A running total would require recalculating from scratch on every Back press.
   const [scoreHistory, setScoreHistory] = useState([])
-  const [visible, setVisible] = useState(true)
-  const [selectedOption, setSelectedOption] = useState(null)
-  const [hoveredOption, setHoveredOption] = useState(null)
+  const [visible, setVisible] = useState(true)                // Controls CSS opacity for fade transitions
+  const [selectedOption, setSelectedOption] = useState(null)  // Index of the chosen option (for highlight)
+  const [hoveredOption, setHoveredOption] = useState(null)    // Index of hovered option (for hover style)
 
+  // Collapse the score history into a single {E:3, I:1, ...} tally on every render.
+  // This is cheap and always in sync — no need for a separate "total scores" state.
   const totalScores = scoreHistory.reduce((acc, s) => {
     for (const k in s) acc[k] = (acc[k] || 0) + s[k]
     return acc
   }, {})
 
-  const pad = isMobile ? '24px' : '48px'
-  const scene = scenes[currentScene]
+  const pad = isMobile ? '24px' : '48px'  // Horizontal padding, shared across layout sections
+  const scene = scenes[currentScene]       // The current scene definition from quizData.js
 
+  /*
+   * fadeToScene — animate out, swap scene, animate in.
+   *
+   * The double requestAnimationFrame is a browser timing trick:
+   *   1. setTimeout fires → state updates (currentScene changes, DOM re-renders with new content)
+   *   2. First rAF: queued before the next paint — DOM has new content but hasn't painted yet
+   *   3. Second rAF: fires after that paint — NOW we set visible=true so the fade-in plays
+   *      on the correct content, not the previous scene.
+   * Without the double rAF, setting visible=true immediately after setCurrentScene
+   * could race with the DOM update and show the fade-in on the wrong scene.
+   */
   const fadeToScene = (nextKey) => {
     setVisible(false)
     setTimeout(() => {
-      setPath((prev) => [...prev, currentScene])
+      setPath((prev) => [...prev, currentScene])  // Push current scene onto history stack
       setCurrentScene(nextKey)
       setSelectedOption(null)
       setHoveredOption(null)
@@ -42,6 +61,7 @@ export default function Quiz() {
       setPath((p) => p.slice(0, -1))
       // Drop the most recent score entry if the previous scene was a question
       // (i.e. we're undoing an answer we just gave).
+      // Going back to 'intro' doesn't pop a score — intro has no answers.
       if (scenes[prev]?.type === 'question') {
         setScoreHistory((h) => h.slice(0, -1))
       }
@@ -55,14 +75,31 @@ export default function Quiz() {
   }
 
   const handleAnswer = (option, index) => {
+    // Highlight the selected option immediately for tactile feedback.
     setSelectedOption(index)
+    // Append this answer's scores to history (option.scores is an object like {E:2, N:1}).
     setScoreHistory((h) => [...h, option.scores || {}])
-    setTimeout(() => fadeToScene(option.next), 350)
+
+    let nextKey = option.next
+    if (nextKey === 'q4_dynamic') {
+      // Compute routing using current scoreHistory + this answer's scores.
+      // Can't use the pending state update — read scoreHistory directly here.
+      const updatedHistory = [...scoreHistory, option.scores || {}]
+      const updated = updatedHistory.reduce((acc, s) => {
+        for (const k in s) acc[k] = (acc[k] || 0) + s[k]
+        return acc
+      }, {})
+      nextKey = (updated.F || 0) >= (updated.T || 0) ? 'q4_ab' : 'q4_cd'
+    }
+
+    // Wait 350ms so the highlight is visible before the fade-out starts.
+    setTimeout(() => fadeToScene(nextKey), 350)
   }
 
   const handleRetake = () => {
     setVisible(false)
     setTimeout(() => {
+      // Reset all state to initial values — same as a fresh page load.
       setPath([])
       setScoreHistory([])
       setCurrentScene('intro')
@@ -74,6 +111,8 @@ export default function Quiz() {
     }, TRANSITION_MS)
   }
 
+  // progress is defined on each scene in quizData (0–100). The result scene gets 100
+  // and intro/undefined get 0 (bar not shown for those).
   const progress = scene.progress ?? (scene.type === 'result' ? 100 : 0)
 
   return (
@@ -83,6 +122,8 @@ export default function Quiz() {
       display: 'flex',
       flexDirection: 'column',
     }}>
+      {/* Top bar: back-to-portfolio link on the left, Back button on the right.
+          Back button only shows when there's history AND we're not on the result screen. */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -119,10 +160,13 @@ export default function Quiz() {
         )}
       </div>
 
+      {/* Progress bar — hidden on intro since progress=0 and the scene hasn't started. */}
       {scene.type !== 'intro' && (
         <ProgressBar progress={progress} pad={pad} />
       )}
 
+      {/* Content area: fades in/out on scene transitions using opacity + translateY.
+          The opacity and transform are driven by the `visible` boolean. */}
       <div style={{
         flex: 1,
         display: 'flex',
@@ -149,8 +193,10 @@ export default function Quiz() {
         )}
 
         {scene.type === 'result' && (
+          // computeMBTI converts the score tally to a 4-letter type string (e.g. "INFP"),
+          // which is used as the key into the results map.
           <ResultScreen
-            result={results[computeMBTI(totalScores)]}
+            result={results[computeMBTI(totalScores, scoreHistory)]}
             onRetake={handleRetake}
             isMobile={isMobile}
           />
@@ -160,15 +206,18 @@ export default function Quiz() {
   )
 }
 
+// ProgressBar is a pure presentational component extracted from Quiz to keep the
+// render function readable. It takes progress (0–100) and pad (horizontal padding).
 function ProgressBar({ progress, pad }) {
   return (
     <div style={{ padding: `16px ${pad} 0` }}>
       <div style={{
         height: 3,
-        backgroundColor: '#1e1e1e',
+        backgroundColor: '#1e1e1e',  // Track (empty)
         borderRadius: 2,
         overflow: 'hidden',
       }}>
+        {/* Fill — width animates smoothly between questions (0.5s ease). */}
         <div style={{
           height: '100%',
           width: `${progress}%`,
@@ -181,6 +230,9 @@ function ProgressBar({ progress, pad }) {
   )
 }
 
+// ImagePlaceholder renders a dashed box wherever real artwork would go.
+// It lets the quiz be shipped and tested before all assets are ready,
+// without the layout breaking or shifting when images are missing.
 function ImagePlaceholder({ width, height, label = 'Image', style = {} }) {
   return (
     <div style={{
@@ -222,6 +274,8 @@ function IntroScreen({ onStart, isMobile }) {
         Personality Quiz
       </p>
       <h1 style={{
+        // clamp(min, preferred, max) — fluid typography that scales with viewport
+        // width (6vw) between fixed min (1.8rem) and max (3rem) bounds.
         fontSize: 'clamp(1.8rem, 6vw, 3rem)',
         fontWeight: 600,
         color: '#e8e6e0',
@@ -239,6 +293,8 @@ function IntroScreen({ onStart, isMobile }) {
       }}>
         It's game night. Your choices will reveal which classic board game matches your personality.
       </p>
+      {/* Hover state managed in local state (not CSS :hover) because the project
+          uses inline styles throughout — CSS pseudo-selectors aren't available. */}
       <button
         onClick={onStart}
         onMouseEnter={() => setHovering(true)}
@@ -268,6 +324,7 @@ function QuestionScreen({ scene, selectedOption, hoveredOption, onAnswer, onHove
 
   return (
     <div style={{ maxWidth: 580, width: '100%' }}>
+      {/* Chapter label — e.g. "The Arrival" — sets the narrative context. */}
       <p style={{
         fontSize: '12px',
         color: '#a78bfa',
@@ -278,6 +335,8 @@ function QuestionScreen({ scene, selectedOption, hoveredOption, onAnswer, onHove
       }}>
         {scene.chapter}
       </p>
+      {/* Narrative paragraph: the story beat that sets up the question. Italic to
+          distinguish it visually from the direct question below. */}
       <p style={{
         fontSize: isMobile ? '15px' : '16px',
         color: '#888888',
@@ -301,6 +360,7 @@ function QuestionScreen({ scene, selectedOption, hoveredOption, onAnswer, onHove
         {scene.options.map((option, i) => {
           const selected = selectedOption === i
           const hovered = hoveredOption === i
+          // Once an option is selected, disable all others to prevent double-clicking.
           const disabled = selectedOption !== null
           const highlighted = selected || hovered
 
@@ -310,6 +370,8 @@ function QuestionScreen({ scene, selectedOption, hoveredOption, onAnswer, onHove
               onClick={() => !disabled && onAnswer(option, i)}
               onMouseEnter={() => onHover(i)}
               onMouseLeave={() => onHover(null)}
+              // Non-selected options are disabled (greyed out) after selection,
+              // but the selected one stays enabled so its highlight is visible.
               disabled={disabled && !selected}
               style={{
                 display: 'flex',
@@ -323,9 +385,12 @@ function QuestionScreen({ scene, selectedOption, hoveredOption, onAnswer, onHove
                 textAlign: 'left',
                 width: '100%',
                 transition: 'all 0.2s ease',
+                // Non-selected options fade to 40% opacity after an answer is locked in.
                 opacity: disabled && !selected ? 0.4 : 1,
               }}
             >
+              {/* Letter label (A/B/C/D) — inverts to dark on selection to contrast
+                  with the purple fill background. */}
               <span style={{
                 fontSize: '13px',
                 fontWeight: 600,
@@ -357,9 +422,13 @@ function ResultScreen({ result, onRetake, isMobile }) {
   const [gameVisible, setGameVisible] = useState(false)
   const [hoveringRetake, setHoveringRetake] = useState(false)
 
+  // Staggered reveal: traits appear at 500ms, game card at 900ms.
+  // This creates a deliberate sequence — type → description → traits → game —
+  // making the result feel like a build-up rather than everything dumping at once.
   useEffect(() => {
     const t1 = setTimeout(() => setTraitsVisible(true), 500)
     const t2 = setTimeout(() => setGameVisible(true), 900)
+    // Cleanup on unmount (e.g. if user hits Retake before timers fire)
     return () => {
       clearTimeout(t1)
       clearTimeout(t2)
@@ -368,6 +437,8 @@ function ResultScreen({ result, onRetake, isMobile }) {
 
   return (
     <div style={{ textAlign: 'center', maxWidth: 540 }}>
+      {/* Show real image if available, otherwise placeholder. Keeps layout stable
+          before assets are added. */}
       {result.image ? (
         <img
           src={result.image}
@@ -401,6 +472,7 @@ function ResultScreen({ result, onRetake, isMobile }) {
       }}>
         You are
       </p>
+      {/* MBTI type code styled with the type's accent color (defined in results map). */}
       <h2 style={{
         fontSize: 'clamp(2.4rem, 8vw, 3.6rem)',
         fontWeight: 700,
@@ -431,6 +503,8 @@ function ResultScreen({ result, onRetake, isMobile }) {
       }}>
         {result.description}
       </p>
+
+      {/* Trait pills — fade in + slide up at 500ms (traitsVisible gate). */}
       <div style={{
         display: 'flex',
         flexWrap: 'wrap',
@@ -442,6 +516,8 @@ function ResultScreen({ result, onRetake, isMobile }) {
         transition: 'opacity 0.5s ease, transform 0.5s ease',
       }}>
         {result.traits.map((trait) => (
+          // `18` appended to result.color is hex for 9.4% opacity — a very faint tint.
+          // `30` is ~19% opacity — used for the border to be slightly more visible.
           <span
             key={trait}
             style={{
@@ -460,6 +536,7 @@ function ResultScreen({ result, onRetake, isMobile }) {
         ))}
       </div>
 
+      {/* Game card — fades in at 900ms, after traits have appeared. */}
       <div style={{
         opacity: gameVisible ? 1 : 0,
         transform: gameVisible ? 'translateY(0)' : 'translateY(12px)',
@@ -493,6 +570,7 @@ function ResultScreen({ result, onRetake, isMobile }) {
             }}
           />
         ) : (
+          // Emoji fallback while game box-art images aren't ready yet.
           <div style={{
             fontSize: isMobile ? '48px' : '60px',
             lineHeight: 1,
