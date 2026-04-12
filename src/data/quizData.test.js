@@ -38,7 +38,7 @@ describe('computeMBTI — trajectory tiebreaker', () => {
       { I: 2, N: 1, T: 1 },  // Q1: N scored
       { N: 2, P: 1, T: 1 },  // Q2: N scored
       { S: 2, J: 2 },         // Q3: S scored
-      { T: 2, J: 1, S: 1 },  // Q4: S scored again
+      { T: 2, J: 1 },         // Q4: neither S nor N
       { J: 2, I: 1, T: 1 },  // Q5: neither
     ]
     expect(computeMBTI(scores, history)).toBe('INTJ')
