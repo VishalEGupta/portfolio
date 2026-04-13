@@ -196,6 +196,8 @@ export default function Quiz() {
           <TransitionScreen
             scene={scene}
             onAdvance={(nextKey) => {
+              // totalScores is safe here: the q3 answer committed to state before
+              // fadeToScene was called, and the 2500ms delay ensures state has settled.
               if (nextKey === 'q4_dynamic') {
                 nextKey = (totalScores.F || 0) >= (totalScores.T || 0) ? 'q4_ab' : 'q4_cd'
               }
@@ -269,7 +271,7 @@ function TransitionScreen({ scene, onAdvance }) {
   useEffect(() => {
     const timer = setTimeout(() => onAdvance(scene.next), scene.delay ?? 2500)
     return () => clearTimeout(timer)
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div style={{ textAlign: 'center', maxWidth: 480 }}>
