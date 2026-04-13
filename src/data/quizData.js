@@ -138,7 +138,7 @@ export const scenes = {
     chapter: 'The Game Shelf',
     progress: 25,
     narrative:
-      "The person next to you lights up — they've played the weird one you're holding, and they have opinions. Strong ones. They start explaining.",
+      "Someone else wanders over and picks up whatever you're holding — lights up, apparently. They've played it, and they have opinions. Strong ones. They start explaining.",
     question: 'How do you respond?',
     options: [
       {
