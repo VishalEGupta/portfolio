@@ -192,6 +192,18 @@ export default function Quiz() {
           />
         )}
 
+        {scene.type === 'transition' && (
+          <TransitionScreen
+            scene={scene}
+            onAdvance={(nextKey) => {
+              if (nextKey === 'q4_dynamic') {
+                nextKey = (totalScores.F || 0) >= (totalScores.T || 0) ? 'q4_ab' : 'q4_cd'
+              }
+              fadeToScene(nextKey)
+            }}
+          />
+        )}
+
         {scene.type === 'result' && (
           // computeMBTI converts the score tally to a 4-letter type string (e.g. "INFP"),
           // which is used as the key into the results map.
@@ -249,6 +261,27 @@ function ImagePlaceholder({ width, height, label = 'Image', style = {} }) {
       <span style={{ color: '#444', fontSize: '14px', letterSpacing: '0.04em' }}>
         {label}
       </span>
+    </div>
+  )
+}
+
+function TransitionScreen({ scene, onAdvance }) {
+  useEffect(() => {
+    const timer = setTimeout(() => onAdvance(scene.next), scene.delay ?? 2500)
+    return () => clearTimeout(timer)
+  }, [])
+
+  return (
+    <div style={{ textAlign: 'center', maxWidth: 480 }}>
+      <p style={{
+        fontSize: '18px',
+        color: '#888888',
+        fontStyle: 'italic',
+        lineHeight: 1.8,
+        letterSpacing: '0.01em',
+      }}>
+        {scene.body}
+      </p>
     </div>
   )
 }
