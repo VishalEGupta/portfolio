@@ -228,6 +228,22 @@ describe('path simulation — new branch questions', () => {
     ])
     expect(result).toBe('INTJ')
   })
+
+  test('host path with q2d_ext → ISFJ', () => {
+    const result = simulatePath([
+      ['q1', 3],        // E:1, S:1, F:2, J:1
+      ['q2_d', 0],      // S:2, T:1, J:1  — take the kitchen
+      ['q2d_ext', 0],   // F:2, I:1  — warmth
+      ['q3_d', 0],      // S:1, T:1, J:2  — spring into action
+      ['q4_ab', 0],     // S:2, J:1
+      ['q5_ab', 2],     // I:1, F:2
+      ['q6_ab', 2],     // F:2, I:1
+      ['q7_ab', 0],     // J:2, I:1
+      ['q8', 0],        // T:2, J:1, S:1
+      ['q9', 0],        // J:2, I:1, T:1
+    ])
+    expect(result).toBe('ISFJ')
+  })
 })
 
 describe('score rebalancing — option weights', () => {

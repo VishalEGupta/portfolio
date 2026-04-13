@@ -171,16 +171,45 @@ export const scenes = {
       {
         text: 'Take the kitchen — rescue the food, plate it up, own the timeline',
         scores: { S: 2, T: 1, J: 1 },
-        next: 'q3_d',
+        next: 'q2d_ext',
       },
       {
         text: 'Work the room — refill drinks, introduce strangers, keep the energy up',
         scores: { E: 2, F: 1, J: 1 },
-        next: 'q3_d',
+        next: 'q2d_ext',
       },
       {
         text: 'Find the host and get them out of the weeds — they need a minute to breathe',
         scores: { I: 1, F: 2, N: 1 },
+        next: 'q2d_ext',
+      },
+    ],
+  },
+
+  // ─── Q2D_EXT — The Moment (host path) ──────────────────────────
+  // Inserted between q2_d and q3_d. Host path previously skipped
+  // T/F almost entirely before the AB/CD routing decision.
+  q2d_ext: {
+    type: 'question',
+    chapter: 'Backstage',
+    progress: 25,
+    narrative:
+      "For one second, the chaos pauses. The host finds you, touches your arm: \"I don't know what I'd do without you.\" Something in the room softens.",
+    question: 'What moves through you?',
+    options: [
+      {
+        text: "Warmth — this is exactly why you show up for people",
+        scores: { F: 2, I: 1 },
+        next: 'q3_d',
+      },
+      {
+        text: "Satisfaction — you saw the problem, you solved it, that's enough",
+        scores: { T: 2, J: 1 },
+        next: 'q3_d',
+      },
+      {
+        text: "A flicker of something — you're already thinking about what still needs doing",
+        scores: { N: 1, J: 2, S: 1 },
         next: 'q3_d',
       },
     ],
