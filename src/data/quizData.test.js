@@ -105,21 +105,6 @@ describe('path simulation — confirmed misclassification fixes', () => {
     expect(result).toBe('ENFP')
   })
 
-  test('INTJ game shelf path → INTJ (not ISTJ)', () => {
-    const result = simulatePath([
-      ['q1', 2],     // I:1, N:2, T:1
-      ['q2_c', 0],   // N:2, P:1, T:1
-      ['q3_c', 0],   // S:2, J:2  → T=2, F=0 → CD track
-      ['q4_cd', 2],  // N:2, I:1
-      ['q5_cd', 1],  // N:2, I:1
-      ['q6_cd', 1],  // I:2, N:1
-      ['q7_cd', 0],  // J:2, T:1
-      ['q8', 0],     // T:2, J:1, S:1
-      ['q9', 0],     // J:2, I:1, T:1
-    ])
-    expect(result).toBe('INTJ')
-  })
-
   test('ISFJ kitchen path → ISFJ (not INFJ)', () => {
     const result = simulatePath([
       ['q1', 1],     // I:1, S:1, F:2
@@ -207,6 +192,41 @@ describe('transition scene structure', () => {
     for (const option of scenes.q9.options) {
       expect(option.next).toBe('t_end')
     }
+  })
+})
+
+describe('path simulation — new branch questions', () => {
+  test('game shelf extroverted path → ENFP (not locked into INTJ)', () => {
+    // Demonstrates rebalancing lets E-leaning game shelf players escape I anchoring
+    const result = simulatePath([
+      ['q1', 2],       // I:1, N:2, T:1
+      ['q2_c', 0],     // N:2, P:1, E:1
+      ['q2c_ext', 0],  // E:2, F:1  — "tell me everything"
+      ['q3_c', 2],     // E:1, F:1, P:1, N:1  — skim rules aloud
+      ['q4_ab', 1],    // N:2, I:1
+      ['q5_ab', 0],    // E:2, F:1
+      ['q6_ab', 1],    // F:1, P:2
+      ['q7_ab', 1],    // P:2, E:1
+      ['q8', 2],       // N:2, P:1, E:1
+      ['q9', 1],       // E:2, F:1, P:1
+    ])
+    expect(result).toBe('ENFP')
+  })
+
+  test('INTJ game shelf path → INTJ (updated to include q2c_ext)', () => {
+    const result = simulatePath([
+      ['q1', 2],       // I:1, N:2, T:1
+      ['q2_c', 0],     // N:2, P:1, E:1
+      ['q2c_ext', 2],  // I:2, N:1  — "mostly reading the box"
+      ['q3_c', 0],     // S:2, J:2  → T=1, F=0 → CD track
+      ['q4_cd', 2],    // N:2, I:1
+      ['q5_cd', 1],    // N:2, I:1
+      ['q6_cd', 1],    // I:2, N:1
+      ['q7_cd', 0],    // J:2, T:1
+      ['q8', 0],       // T:2, J:1, S:1
+      ['q9', 0],       // J:2, I:1, T:1
+    ])
+    expect(result).toBe('INTJ')
   })
 })
 

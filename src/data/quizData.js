@@ -115,16 +115,45 @@ export const scenes = {
       {
         text: 'The weird one with the cryptic cover — you need to know what this is',
         scores: { N: 2, P: 1, E: 1 },
-        next: 'q3_c',
+        next: 'q2c_ext',
       },
       {
         text: 'The classic you\'ve played a hundred times — you know exactly how it plays out',
         scores: { S: 2, J: 2 },
-        next: 'q3_c',
+        next: 'q2c_ext',
       },
       {
         text: 'The one with the best art — you judge games by their covers, honestly',
         scores: { N: 1, F: 1, P: 2 },
+        next: 'q2c_ext',
+      },
+    ],
+  },
+
+  // ─── Q2C_EXT — The Stranger (game shelf path) ─────────────────────────────────
+  // Inserted between q2_c and q3_c. Probes E/I and F/T directly —
+  // the game shelf path previously skipped F entirely.
+  q2c_ext: {
+    type: 'question',
+    chapter: 'The Game Shelf',
+    progress: 25,
+    narrative:
+      "The person next to you lights up — they've played the weird one you're holding, and they have opinions. Strong ones. They start explaining.",
+    question: 'How do you respond?',
+    options: [
+      {
+        text: "Tell me everything — you have my full attention",
+        scores: { E: 2, F: 1 },
+        next: 'q3_c',
+      },
+      {
+        text: "You listen, ask a sharp question, steer toward whether it's actually good",
+        scores: { T: 2, N: 1 },
+        next: 'q3_c',
+      },
+      {
+        text: "You let them talk but you're mostly reading the back of the box",
+        scores: { I: 2, N: 1 },
         next: 'q3_c',
       },
     ],
