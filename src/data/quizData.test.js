@@ -166,6 +166,49 @@ describe('path simulation — confirmed misclassification fixes', () => {
   })
 })
 
+describe('transition scene structure', () => {
+  test.each(['t_game_start', 't_last_round', 't_after_final', 't_end'])(
+    '%s has type, body, next, and progress',
+    (key) => {
+      const scene = scenes[key]
+      expect(scene).toBeDefined()
+      expect(scene.type).toBe('transition')
+      expect(typeof scene.body).toBe('string')
+      expect(scene.body.length).toBeGreaterThan(0)
+      expect(typeof scene.next).toBe('string')
+      expect(typeof scene.progress).toBe('number')
+    }
+  )
+
+  test('q3 scenes all route through t_game_start', () => {
+    for (const key of ['q3_a', 'q3_b', 'q3_c', 'q3_d']) {
+      for (const option of scenes[key].options) {
+        expect(option.next).toBe('t_game_start')
+      }
+    }
+  })
+
+  test('q7_ab and q7_cd route through t_last_round', () => {
+    for (const key of ['q7_ab', 'q7_cd']) {
+      for (const option of scenes[key].options) {
+        expect(option.next).toBe('t_last_round')
+      }
+    }
+  })
+
+  test('q8 routes through t_after_final', () => {
+    for (const option of scenes.q8.options) {
+      expect(option.next).toBe('t_after_final')
+    }
+  })
+
+  test('q9 routes through t_end', () => {
+    for (const option of scenes.q9.options) {
+      expect(option.next).toBe('t_end')
+    }
+  })
+})
+
 describe('score rebalancing — option weights', () => {
   test('q1 game shelf: N:2 not I:2', () => {
     expect(scenes.q1.options[2].scores).toEqual({ I: 1, N: 2, T: 1 })

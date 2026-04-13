@@ -169,17 +169,17 @@ export const scenes = {
       {
         text: 'Jump in — pick a side, sharpen the argument, make it a real debate',
         scores: { E: 1, T: 2, N: 1 },
-        next: 'q4_dynamic',
+        next: 't_game_start',
       },
       {
         text: 'Mediate — find the thing they actually agree on and name it out loud',
         scores: { F: 2, J: 1, N: 1 },
-        next: 'q4_dynamic',
+        next: 't_game_start',
       },
       {
         text: 'Stay quiet, watch the shape of it — you\'ll have your own opinion later',
         scores: { I: 2, T: 1, P: 1 },
-        next: 'q4_dynamic',
+        next: 't_game_start',
       },
     ],
   },
@@ -196,17 +196,17 @@ export const scenes = {
       {
         text: 'Just listen. Reflect back what you\'re hearing. Don\'t try to fix it',
         scores: { I: 1, F: 2, N: 1, P: 1 },
-        next: 'q4_dynamic',
+        next: 't_game_start',
       },
       {
         text: 'Share your own story — the time you felt something similar — so they don\'t feel alone',
         scores: { E: 1, F: 1, N: 1, S: 1 },
-        next: 'q4_dynamic',
+        next: 't_game_start',
       },
       {
         text: 'Help them think it through — ask the questions that will untangle it',
         scores: { T: 2, J: 1, N: 1 },
-        next: 'q4_dynamic',
+        next: 't_game_start',
       },
     ],
   },
@@ -223,17 +223,17 @@ export const scenes = {
       {
         text: 'Explain every rule properly before starting — do it right the first time',
         scores: { S: 2, J: 2 },
-        next: 'q4_dynamic',
+        next: 't_game_start',
       },
       {
         text: 'Cover the basics, start playing, handle edge cases as they come up',
         scores: { N: 1, P: 2, T: 1 },
-        next: 'q4_dynamic',
+        next: 't_game_start',
       },
       {
         text: 'Skim the rules aloud — make it part of the fun, not a lecture',
         scores: { E: 1, F: 1, P: 1, N: 1 },
-        next: 'q4_dynamic',
+        next: 't_game_start',
       },
     ],
   },
@@ -250,17 +250,17 @@ export const scenes = {
       {
         text: 'Spring into action — fix it in thirty seconds, no big deal, no drama',
         scores: { S: 1, T: 1, J: 2 },
-        next: 'q4_dynamic',
+        next: 't_game_start',
       },
       {
         text: 'Crack a joke — defuse the tension, make the whole room laugh about it',
         scores: { E: 1, P: 2, F: 1 },
-        next: 'q4_dynamic',
+        next: 't_game_start',
       },
       {
         text: 'Improvise — turn the disaster into a story, rescue the moment with style',
         scores: { N: 2, P: 1, E: 1 },
-        next: 'q4_dynamic',
+        next: 't_game_start',
       },
     ],
   },
@@ -365,17 +365,17 @@ export const scenes = {
       {
         text: 'Call it — you know when something is done, and you\'re good at endings',
         scores: { J: 2, I: 1 },
-        next: 'q8',
+        next: 't_last_round',
       },
       {
         text: 'Say yes without thinking — you don\'t want this to be over',
         scores: { P: 2, E: 1 },
-        next: 'q8',
+        next: 't_last_round',
       },
       {
         text: 'Read the room first — you\'ll match whatever the group actually needs',
         scores: { F: 2, P: 1 },
-        next: 'q8',
+        next: 't_last_round',
       },
     ],
   },
@@ -481,17 +481,17 @@ export const scenes = {
       {
         text: 'Execute — you mapped it out, you follow through without second-guessing',
         scores: { J: 2, T: 1 },
-        next: 'q8',
+        next: 't_last_round',
       },
       {
         text: 'Adapt — something shifted and the better play is different from your plan',
         scores: { P: 2, N: 1 },
-        next: 'q8',
+        next: 't_last_round',
       },
       {
         text: 'Go for the unexpected move — risky, probably brilliant, definitely memorable',
         scores: { N: 2, P: 1 },
-        next: 'q8',
+        next: 't_last_round',
       },
     ],
   },
@@ -512,17 +512,17 @@ export const scenes = {
       {
         text: 'To win. Read the table, exploit the weak spots, be ruthless about it',
         scores: { T: 2, J: 1, S: 1 },
-        next: 'q9',
+        next: 't_after_final',
       },
       {
         text: 'For the bit. It\'s about the stories we\'ll tell tomorrow, not the score',
         scores: { F: 1, P: 2, E: 1 },
-        next: 'q9',
+        next: 't_after_final',
       },
       {
         text: 'Unpredictably. Go for the play nobody sees coming. High risk, high reward',
         scores: { N: 2, P: 1, E: 1 },
-        next: 'q9',
+        next: 't_after_final',
       },
     ],
   },
@@ -539,24 +539,57 @@ export const scenes = {
       {
         text: 'You\'re the first to call it — you know when the night is over, and you\'re good at leaving',
         scores: { J: 2, I: 1, T: 1 },
-        next: 'result',
+        next: 't_end',
       },
       {
         text: 'You stay until the very last person — you don\'t want it to end',
         scores: { E: 2, F: 1, P: 1 },
-        next: 'result',
+        next: 't_end',
       },
       {
         text: 'You linger with one or two people, sitting on the porch, talking about something real',
         scores: { I: 1, N: 2, F: 1 },
-        next: 'result',
+        next: 't_end',
       },
       {
         text: 'You bounce at some point nobody noticed — you\'re already onto whatever\'s next',
         scores: { P: 2, S: 1, T: 1 },
-        next: 'result',
+        next: 't_end',
       },
     ],
+  },
+
+  // ─── TRANSITIONS ───────────────────────────────────────────────
+  t_game_start: {
+    type: 'transition',
+    progress: 35,
+    body: 'The games come out. Someone clears the table. The night shifts.',
+    next: 'q4_dynamic',
+    delay: 2500,
+  },
+
+  t_last_round: {
+    type: 'transition',
+    progress: 75,
+    body: "It's late. Nobody's leaving. One more game — the one that matters.",
+    next: 'q8',
+    delay: 2500,
+  },
+
+  t_after_final: {
+    type: 'transition',
+    progress: 85,
+    body: 'The final game ends. The table erupts — arguments, laughter, someone demanding a rematch.',
+    next: 'q9',
+    delay: 2500,
+  },
+
+  t_end: {
+    type: 'transition',
+    progress: 95,
+    body: 'The house is quiet now. Just you and the drive home and whatever the night said about you.',
+    next: 'result',
+    delay: 3000,
   },
 
   // ─── RESULT ────────────────────────────────────────────────
