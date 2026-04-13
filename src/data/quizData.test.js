@@ -177,6 +177,7 @@ describe('transition scene structure', () => {
       expect(scene.body.length).toBeGreaterThan(0)
       expect(typeof scene.next).toBe('string')
       expect(typeof scene.progress).toBe('number')
+      expect(typeof scene.delay).toBe('number')
     }
   )
 
