@@ -28,7 +28,7 @@ export const scenes = {
     options: [
       {
         text: 'The fireplace crew — loud laughter, a story already in progress',
-        scores: { E: 2, S: 1, F: 1 },
+        scores: { E: 1, S: 1, F: 1, N: 1 },
         next: 'q2_a',
       },
       {
@@ -38,12 +38,12 @@ export const scenes = {
       },
       {
         text: 'The game shelf — you want to see what they\'ve got',
-        scores: { I: 2, N: 1, T: 1 },
+        scores: { I: 1, N: 2, T: 1 },
         next: 'q2_c',
       },
       {
         text: 'The host — they look a little frazzled, and you can help',
-        scores: { E: 1, S: 1, F: 1, J: 2 },
+        scores: { E: 1, S: 1, F: 2, J: 1 },
         next: 'q2_d',
       },
     ],
@@ -114,7 +114,7 @@ export const scenes = {
     options: [
       {
         text: 'The weird one with the cryptic cover — you need to know what this is',
-        scores: { N: 2, P: 1, T: 1 },
+        scores: { N: 2, P: 1, E: 1 },
         next: 'q3_c',
       },
       {

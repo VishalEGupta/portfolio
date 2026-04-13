@@ -165,3 +165,21 @@ describe('path simulation — confirmed misclassification fixes', () => {
     expect(result).toBe('ENTJ')
   })
 })
+
+describe('score rebalancing — option weights', () => {
+  test('q1 game shelf: N:2 not I:2', () => {
+    expect(scenes.q1.options[2].scores).toEqual({ I: 1, N: 2, T: 1 })
+  })
+
+  test('q1 fireplace: E:1 not E:2, gains N:1', () => {
+    expect(scenes.q1.options[0].scores).toEqual({ E: 1, S: 1, F: 1, N: 1 })
+  })
+
+  test('q1 host: F:2 not J:2', () => {
+    expect(scenes.q1.options[3].scores).toEqual({ E: 1, S: 1, F: 2, J: 1 })
+  })
+
+  test('q2_c weird cover: E:1 not T:1', () => {
+    expect(scenes.q2_c.options[0].scores).toEqual({ N: 2, P: 1, E: 1 })
+  })
+})
