@@ -35,7 +35,7 @@ describe('computeMBTI — trajectory tiebreaker', () => {
     // S=3, N=3 but N appeared in 2 questions, S only in 1
     const scores = { I: 4, E: 0, N: 3, S: 3, T: 5, F: 0, J: 5, P: 1 }
     const history = [
-      { I: 2, N: 1, T: 1 },  // Q1: N scored
+      { I: 1, N: 2, T: 1 },  // Q1: N scored
       { N: 2, P: 1, T: 1 },  // Q2: N scored
       { S: 2, J: 2 },         // Q3: S scored
       { T: 2, J: 1 },         // Q4: neither S nor N
@@ -77,7 +77,7 @@ function simulatePath(steps) {
 describe('path simulation — confirmed misclassification fixes', () => {
   test('ENFP fireplace path → ENFP (not ENTP)', () => {
     const result = simulatePath([
-      ['q1', 0],     // E:2, S:1, F:1
+      ['q1', 0],     // E:1, S:1, F:1, N:1
       ['q2_a', 1],   // N:2, F:1, I:1
       ['q3_a', 1],   // F:2, J:1, N:1  → F=4, T=0 → AB track
       ['q4_ab', 1],  // N:2, I:1
@@ -107,7 +107,7 @@ describe('path simulation — confirmed misclassification fixes', () => {
 
   test('INTJ game shelf path → INTJ (not ISTJ)', () => {
     const result = simulatePath([
-      ['q1', 2],     // I:2, N:1, T:1
+      ['q1', 2],     // I:1, N:2, T:1
       ['q2_c', 0],   // N:2, P:1, T:1
       ['q3_c', 0],   // S:2, J:2  → T=2, F=0 → CD track
       ['q4_cd', 2],  // N:2, I:1
@@ -152,7 +152,7 @@ describe('path simulation — confirmed misclassification fixes', () => {
 
   test('ENTJ path → ENTJ (regression)', () => {
     const result = simulatePath([
-      ['q1', 0],     // E:2, S:1, F:1
+      ['q1', 0],     // E:1, S:1, F:1, N:1
       ['q2_a', 0],   // E:2, S:1, P:1
       ['q3_a', 0],   // E:1, T:2, N:1  → T=2, F=1 → CD track
       ['q4_cd', 0],  // T:2, E:1
