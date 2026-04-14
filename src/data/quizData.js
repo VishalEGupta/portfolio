@@ -677,9 +677,11 @@ export const results = {
   INTJ: {
     type: 'INTJ',
     title: 'The Architect',
+    tagline: 'Ten steps ahead, always',
     description:
       "Imaginative, strategic, and always playing the long game. You see systems where others see chaos, and you can't help but optimize everything. Independent and fiercely analytical, you move quietly — then surprise everyone with a move they never saw coming.",
-    traits: ['10 moves ahead', 'Pawn sacrifice energy', 'Never blunders twice', 'Endgame specialist'],
+    traits: ['10 moves ahead', 'Pawn sacrifice energy', 'Never blunders twice', 'Endgame specialist', 'Quietly winning', 'End-game brain from turn 1'],
+    tags: ['strategic', 'independent', 'high standards', 'direct', 'relentless planner', 'skeptical of shortcuts', 'private', 'systems thinker'],
     color: '#a78bfa',
     image: null,
     game: {
@@ -702,9 +704,11 @@ export const results = {
   INTP: {
     type: 'INTP',
     title: 'The Logician',
+    tagline: "Technically, you're all wrong",
     description:
       "An innovative thinker with an unquenchable thirst for knowledge. You love abstract ideas, logical puzzles, and asking \"what if?\" — and you'd rather be right than popular. Your mind is a playground of theories and possibilities.",
-    traits: ['Walking card catalog', 'Challenges the answer key', 'Won the pie already', 'Niche specialist'],
+    traits: ['Walking card catalog', 'Challenges the answer key', 'Won the pie already', 'Niche specialist', 'Citations ready', 'Corrects the trivia host'],
+    tags: ['analytical', 'curious', 'independent', 'precise', 'theoretical', 'absent-minded', 'honest', 'nonconformist'],
     color: '#7dd3fc',
     image: null,
     game: {
@@ -727,9 +731,11 @@ export const results = {
   ENTJ: {
     type: 'ENTJ',
     title: 'The Commander',
+    tagline: 'I was born to conquer this board',
     description:
       "Bold, decisive, and strategic. You see the path forward and you're already leading the way — people naturally follow. You're charismatic, efficient, and you don't just play to win, you play to dominate.",
-    traits: ['Owns Australia by T2', 'Alliance temporary', 'Continent collector', 'War is the plan'],
+    traits: ['Owns Australia by T2', 'Alliance temporary', 'Continent collector', 'War is the plan', 'Already gave a speech', 'Your turn is taking too long'],
+    tags: ['decisive', 'ambitious', 'natural leader', 'direct', 'confident', 'competitive', 'efficient', 'commanding'],
     color: '#ec4899',
     image: null,
     game: {
@@ -752,9 +758,11 @@ export const results = {
   ENTP: {
     type: 'ENTP',
     title: 'The Debater',
+    tagline: "That's not technically a word... or is it?",
     description:
       "Quick-witted and clever. You love intellectual sparring, creative problem-solving, and playing devil's advocate just for fun. You're the person who finds the brilliant, unexpected angle everyone else missed.",
-    traits: ['Plays qi unironically', 'Challenges every word', 'Two-letter word hoarder', 'Dictionary is a weapon'],
+    traits: ['Plays qi unironically', 'Challenges every word', 'Two-letter word hoarder', 'Dictionary is a weapon', 'Challenges the dictionary too', 'Won the argument, lost the game'],
+    tags: ['quick-witted', 'argumentative', 'inventive', 'charming', 'curious', "devil's advocate", 'energetic', 'unconventional'],
     color: '#38bdf8',
     image: null,
     game: {
