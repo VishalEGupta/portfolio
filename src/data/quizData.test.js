@@ -1,5 +1,6 @@
 import { describe, test, expect } from 'vitest'
-import { results } from './quizData'
+import { computeMBTI, scenes } from './quizData.js'
+import { results } from './quizData.js'
 
 describe('result shape — new trading card fields', () => {
   const allTypes = Object.keys(results)
@@ -11,6 +12,7 @@ describe('result shape — new trading card fields', () => {
 
   test.each(allTypes)('%s traits array has exactly 6 items', (type) => {
     expect(results[type].traits).toHaveLength(6)
+    results[type].traits.forEach((trait) => expect(typeof trait).toBe('string'))
   })
 
   test.each(allTypes)('%s tags array has exactly 8 items', (type) => {
@@ -18,7 +20,6 @@ describe('result shape — new trading card fields', () => {
     results[type].tags.forEach((tag) => expect(typeof tag).toBe('string'))
   })
 })
-import { computeMBTI, scenes } from './quizData.js'
 
 // ─── computeMBTI unit tests ────────────────────────────────────────────────
 
