@@ -1,6 +1,5 @@
 import { describe, test, expect } from 'vitest'
-import { computeMBTI, scenes } from './quizData.js'
-import { results } from './quizData.js'
+import { computeMBTI, scenes, results } from './quizData.js'
 
 describe('result shape — new trading card fields', () => {
   const allTypes = Object.keys(results)
