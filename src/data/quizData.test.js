@@ -145,7 +145,7 @@ describe('path simulation — confirmed misclassification fixes', () => {
       ['q6_cd', 0],  // E:2, T:1
       ['q7_cd', 0],  // J:2, T:1
       ['q8', 2],     // N:2, P:1, E:1  ← unpredictable play = N (was index 0 = S)
-      ['q9', 0],     // J:2, I:1, T:1
+      ['q9', 0],     // J:2, T:1
     ])
     expect(result).toBe('ENTJ')
   })
@@ -238,9 +238,9 @@ describe('path simulation — new branch questions', () => {
       ['q4_ab', 0],     // S:2, J:1
       ['q5_ab', 2],     // I:1, F:2
       ['q6_ab', 2],     // F:2, I:1
-      ['q7_ab', 0],     // J:2, I:1
+      ['q7_ab', 0],     // J:2
       ['q8', 0],        // T:2, J:1, S:1
-      ['q9', 0],        // J:2, I:1, T:1
+      ['q9', 0],        // J:2, T:1
     ])
     expect(result).toBe('ISFJ')
   })
