@@ -868,7 +868,7 @@ export const results = {
   ENFP: {
     type: 'ENFP',
     title: 'The Campaigner',
-    tagline: 'Rules are more like suggestions',
+    tagline: 'Chaos? I prefer "creative freedom"',
     description:
       "Enthusiastic, creative, and sociable. You find possibility everywhere and bring infectious energy to every room you enter. Life is a story, and you're writing the most colorful chapter.",
     traits: ['Draws chaos, wins anyway', 'Team captain by vibes', 'Rules are suggestions', 'Abstract expressionist', 'Made it a bit', 'Everyone is guessing it'],
