@@ -787,14 +787,16 @@ export const results = {
   INFJ: {
     type: 'INFJ',
     title: 'The Advocate',
+    tagline: 'Already had a cure in round two',
     description:
       "Quiet, insightful, and deeply idealistic. You see the world's potential and feel a calling to help bring it to life. You're rare — mystical, empathetic, and driven by a profound sense of purpose that guides everything you do.",
-    traits: ['Has a cure by Round 2', 'Reads the full rulebook', 'Saves everyone quietly', 'Outbreak preventionist'],
+    traits: ['Has a cure by Round 2', 'Reads the full rulebook', 'Saves everyone quietly', 'Outbreak preventionist', 'Plays for the team win', 'Saw the crisis coming'],
+    tags: ['empathetic', 'visionary', 'principled', 'private', 'purposeful', 'perceptive', 'idealistic', 'quietly determined'],
     color: '#818cf8',
     image: null,
     game: {
       name: 'Pandemic',
-      emoji: '\ud83e\uddec',
+      emoji: '🧬',
       reason:
         "In a crisis, you're the calm, caring leader. Like Pandemic, you play to save everyone — winning together is the only real win. The world needs people like you.",
     },
@@ -812,14 +814,16 @@ export const results = {
   INFP: {
     type: 'INFP',
     title: 'The Mediator',
+    tagline: 'This character would never do that',
     description:
       "Poetic, kind, and deeply imaginative. You live in a world of rich inner dreams, and you bring that creativity everywhere. You're a quiet idealist who sees meaning in the small things and beauty in the overlooked.",
-    traits: ['40-page backstory', 'Names their dice', 'Negotiates with the DM', 'Cries at character death'],
+    traits: ['40-page backstory', 'Names their dice', 'Negotiates with the DM', 'Cries at character death', 'The DM is now crying too', 'Wrote lore between sessions'],
+    tags: ['imaginative', 'empathetic', 'idealistic', 'authentic', 'open-minded', 'introspective', 'compassionate', 'quietly passionate'],
     color: '#c084fc',
     image: null,
     game: {
       name: 'Dungeons & Dragons',
-      emoji: '\ud83d\udc09',
+      emoji: '🐉',
       reason:
         "Your imagination is infinite. Like D&D, you don't play games — you build worlds where anything is possible, and every story matters.",
     },
@@ -837,14 +841,16 @@ export const results = {
   ENFJ: {
     type: 'ENFJ',
     title: 'The Protagonist',
+    tagline: 'Everyone leaves happy, somehow',
     description:
       "Charismatic and inspiring. You have a gift for bringing out the best in others — people feel seen, heard, and motivated around you. You're a natural leader who leads by caring, not commanding.",
-    traits: ['Trades wood with warmth', 'The go-to neighbor', 'Longest road diplomat', 'Alliance architect'],
+    traits: ['Trades wood with warmth', 'The go-to neighbor', 'Longest road diplomat', 'Alliance architect', 'Checked in on everyone', 'Wins by being liked'],
+    tags: ['charismatic', 'empathetic', 'inspiring', 'organized', 'reliable', 'diplomatic', 'warm', 'people-first'],
     color: '#14b8a6',
     image: null,
     game: {
       name: 'Settlers of Catan',
-      emoji: '\ud83c\udf3e',
+      emoji: '🌾',
       reason:
         "You're the ultimate community builder. Like Catan, you win by bringing people together, brokering deals, and building something lasting — together.",
     },
@@ -862,14 +868,16 @@ export const results = {
   ENFP: {
     type: 'ENFP',
     title: 'The Campaigner',
+    tagline: 'Rules are more like suggestions',
     description:
       "Enthusiastic, creative, and sociable. You find possibility everywhere and bring infectious energy to every room you enter. Life is a story, and you're writing the most colorful chapter.",
-    traits: ['Draws chaos, wins anyway', 'Team captain by vibes', 'Rules are suggestions', 'Abstract expressionist'],
+    traits: ['Draws chaos, wins anyway', 'Team captain by vibes', 'Rules are suggestions', 'Abstract expressionist', 'Made it a bit', 'Everyone is guessing it'],
+    tags: ['enthusiastic', 'creative', 'free-spirited', 'sociable', 'curious', 'spontaneous', 'expressive', 'warm'],
     color: '#e879f9',
     image: null,
     game: {
       name: 'Pictionary',
-      emoji: '\ud83c\udfa8',
+      emoji: '🎨',
       reason:
         "You're a born performer. Like Pictionary, you turn every game into a creative, expressive spectacle — and everyone loves being in your orbit.",
     },
