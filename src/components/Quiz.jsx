@@ -455,18 +455,18 @@ function QuestionScreen({ scene, selectedOption, hoveredOption, onAnswer, onHove
 function ResultScreen({ result, onRetake, isMobile }) {
   const [traitsVisible, setTraitsVisible] = useState(false)
   const [gameVisible, setGameVisible] = useState(false)
+  const [compatVisible, setCompatVisible] = useState(false)
   const [hoveringRetake, setHoveringRetake] = useState(false)
 
-  // Staggered reveal: traits appear at 500ms, game card at 900ms.
-  // This creates a deliberate sequence — type → description → traits → game —
-  // making the result feel like a build-up rather than everything dumping at once.
+  // Staggered reveal: traits → game card → compat section
   useEffect(() => {
     const t1 = setTimeout(() => setTraitsVisible(true), 500)
     const t2 = setTimeout(() => setGameVisible(true), 900)
-    // Cleanup on unmount (e.g. if user hits Retake before timers fire)
+    const t3 = setTimeout(() => setCompatVisible(true), 1300)
     return () => {
       clearTimeout(t1)
       clearTimeout(t2)
+      clearTimeout(t3)
     }
   }, [])
 
@@ -503,30 +503,20 @@ function ResultScreen({ result, onRetake, isMobile }) {
         color: '#555555',
         letterSpacing: '0.12em',
         textTransform: 'uppercase',
-        margin: '0 0 10px',
+        margin: '0 0 12px',
       }}>
         You are
       </p>
-      {/* MBTI type code styled with the type's accent color (defined in results map). */}
       <h2 style={{
-        fontSize: 'clamp(2.4rem, 8vw, 3.6rem)',
+        fontSize: 'clamp(1.8rem, 6vw, 2.8rem)',
         fontWeight: 700,
         color: result.color,
-        letterSpacing: '0.04em',
-        lineHeight: 1,
-        margin: '0 0 6px',
-      }}>
-        {result.type}
-      </h2>
-      <p style={{
-        fontSize: isMobile ? '18px' : '20px',
-        color: '#e8e6e0',
-        fontWeight: 500,
-        letterSpacing: '-0.01em',
+        letterSpacing: '-0.02em',
+        lineHeight: 1.1,
         margin: '0 0 24px',
       }}>
         {result.title}
-      </p>
+      </h2>
       <p style={{
         fontSize: isMobile ? '15px' : '16px',
         color: '#c0beb8',
@@ -580,7 +570,7 @@ function ResultScreen({ result, onRetake, isMobile }) {
         backgroundColor: '#161616',
         border: '1px solid #1e1e1e',
         borderRadius: 12,
-        marginBottom: 32,
+        marginBottom: 16,
       }}>
         <p style={{
           fontSize: '11px',
@@ -634,6 +624,65 @@ function ResultScreen({ result, onRetake, isMobile }) {
         }}>
           {result.game.reason}
         </p>
+      </div>
+
+      {/* Compatible / Clash games — fades in at 1300ms, after the game card. */}
+      <div style={{
+        opacity: compatVisible ? 1 : 0,
+        transform: compatVisible ? 'translateY(0)' : 'translateY(12px)',
+        transition: 'opacity 0.6s ease, transform 0.6s ease',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: 12,
+        marginBottom: 32,
+        textAlign: 'left',
+      }}>
+        <div style={{
+          padding: isMobile ? '16px 14px' : '20px 18px',
+          backgroundColor: '#161616',
+          border: '1px solid #1e1e1e',
+          borderRadius: 12,
+        }}>
+          <p style={{
+            fontSize: '11px',
+            color: '#555555',
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            margin: '0 0 12px',
+          }}>
+            You'll love
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {result.compatibleGames.map((g) => (
+              <span key={g.name} style={{ fontSize: '13px', color: '#c0beb8', lineHeight: 1.4 }}>
+                {g.emoji} {g.name}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div style={{
+          padding: isMobile ? '16px 14px' : '20px 18px',
+          backgroundColor: '#161616',
+          border: '1px solid #1e1e1e',
+          borderRadius: 12,
+        }}>
+          <p style={{
+            fontSize: '11px',
+            color: '#555555',
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            margin: '0 0 12px',
+          }}>
+            Hard pass
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {result.clashGames.map((g) => (
+              <span key={g.name} style={{ fontSize: '13px', color: '#888888', lineHeight: 1.4 }}>
+                {g.emoji} {g.name}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
 
       <button
