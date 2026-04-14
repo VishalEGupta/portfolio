@@ -92,7 +92,7 @@ describe('path simulation — confirmed misclassification fixes', () => {
 
   test('ENFP kitchen path → ENFP (not INFP)', () => {
     const result = simulatePath([
-      ['q1', 1],     // I:1, S:1, F:2
+      ['q1', 1],     // I:1, F:2
       ['q2_b', 2],   // I:2, F:1, N:1
       ['q3_b', 0],   // I:1, F:2, N:1, P:1  → F=5, T=0 → AB track
       ['q4_ab', 1],  // N:2, I:1
@@ -107,22 +107,22 @@ describe('path simulation — confirmed misclassification fixes', () => {
 
   test('ISFJ kitchen path → ISFJ (not INFJ)', () => {
     const result = simulatePath([
-      ['q1', 1],     // I:1, S:1, F:2
-      ['q2_b', 0],   // I:1, F:2, J:1
+      ['q1', 1],     // I:1, F:2
+      ['q2_b', 0],   // I:1, F:2
       ['q3_b', 0],   // I:1, F:2, N:1, P:1  → F=6, T=0 → AB track
       ['q4_ab', 0],  // S:2, J:1  ← concrete/S signal
       ['q5_ab', 2],  // I:1, F:2
       ['q6_ab', 2],  // F:2, I:1
-      ['q7_ab', 0],  // J:2, I:1
+      ['q7_ab', 0],  // J:2
       ['q8', 0],     // T:2, J:1, S:1
-      ['q9', 0],     // J:2, I:1, T:1
+      ['q9', 0],     // J:2, T:1
     ])
     expect(result).toBe('ISFJ')
   })
 
   test('INFP kitchen path → INFP (regression)', () => {
     const result = simulatePath([
-      ['q1', 1],     // I:1, S:1, F:2
+      ['q1', 1],     // I:1, F:2
       ['q2_b', 2],   // I:2, F:1, N:1
       ['q3_b', 0],   // I:1, F:2, N:1, P:1  → AB track
       ['q4_ab', 1],  // N:2, I:1
@@ -243,6 +243,24 @@ describe('path simulation — new branch questions', () => {
       ['q9', 0],        // J:2, I:1, T:1
     ])
     expect(result).toBe('ISFJ')
+  })
+
+  test('INFP kitchen via deep-listening option → INFP', () => {
+    // Verifies INFP is reachable via q2_b[0] (deep listening) after decoupling J:1 from it.
+    // Before the fix, q2_b[0] scored { I:1, F:2, J:1 } — the J:1 made INFP unreachable
+    // on this branch even with fully P-coded choices downstream.
+    const result = simulatePath([
+      ['q1', 1],      // I:1, F:2          (was I:1, S:1, F:2)
+      ['q2_b', 0],    // I:1, F:2          (was I:1, F:2, J:1 — J removed)
+      ['q3_b', 0],    // I:1, F:2, N:1, P:1  → F≥T → AB track
+      ['q4_ab', 1],   // N:2, I:1
+      ['q5_ab', 2],   // I:1, F:2
+      ['q6_ab', 2],   // F:2, I:1
+      ['q7_ab', 2],   // F:2, P:1
+      ['q8', 2],      // N:2, P:1, E:1
+      ['q9', 2],      // I:1, N:2, F:1
+    ])
+    expect(result).toBe('INFP')
   })
 })
 

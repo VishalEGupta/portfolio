@@ -33,7 +33,7 @@ export const scenes = {
       },
       {
         text: 'The kitchen — wine being poured, a quieter clump of people',
-        scores: { I: 1, S: 1, F: 2 },
+        scores: { I: 1, F: 2 },
         next: 'q2_b',
       },
       {
@@ -87,7 +87,7 @@ export const scenes = {
     options: [
       {
         text: '"Of course. Tell me everything." — settle in, give them your full attention',
-        scores: { I: 1, F: 2, J: 1 },
+        scores: { I: 1, F: 2 },
         next: 'q3_b',
       },
       {
@@ -422,7 +422,7 @@ export const scenes = {
     options: [
       {
         text: 'Call it — you know when something is done, and you\'re good at endings',
-        scores: { J: 2, I: 1 },
+        scores: { J: 2 },
         next: 't_last_round',
       },
       {
@@ -596,7 +596,7 @@ export const scenes = {
     options: [
       {
         text: 'You\'re the first to call it — you know when the night is over, and you\'re good at leaving',
-        scores: { J: 2, I: 1, T: 1 },
+        scores: { J: 2, T: 1 },
         next: 't_end',
       },
       {
