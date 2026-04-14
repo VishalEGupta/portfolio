@@ -897,9 +897,11 @@ export const results = {
   ISTJ: {
     type: 'ISTJ',
     title: 'The Logistician',
+    tagline: "Already solved it, won't spoil it",
     description:
       "Practical, fact-minded, and reliable. You value order, tradition, and doing things the right way — and you deliver, every time. When you say something will be done, it will be done. Quietly, correctly, without drama.",
-    traits: ['Notebook at the ready', 'Has Colonel Mustard', 'Never guesses, only knows', 'Solved it by T3'],
+    traits: ['Notebook at the ready', 'Has Colonel Mustard', 'Never guesses, only knows', 'Solved it by T3', 'Cross-referenced every clue', 'Silent throughout, deadly'],
+    tags: ['reliable', 'methodical', 'responsible', 'detail-oriented', 'private', 'honest', 'disciplined', 'traditional'],
     color: '#4ade80',
     image: null,
     game: {
@@ -922,9 +924,11 @@ export const results = {
   ISFJ: {
     type: 'ISFJ',
     title: 'The Defender',
+    tagline: 'Quietly won while you were talking',
     description:
       "Dedicated, warm, and quietly observant. You take care of the people you love without needing to be asked — you just notice what's needed. Your strength is your steadiness, and your love shows up as action.",
-    traits: ['Blocked your route kindly', 'Had the plan since T1', 'Longest route, zero drama', 'Quiet winner'],
+    traits: ['Blocked your route kindly', 'Had the plan since T1', 'Longest route, zero drama', 'Quiet winner', 'Remembered your last move', 'Apologized while winning'],
+    tags: ['caring', 'reliable', 'patient', 'observant', 'loyal', 'humble', 'steady', 'warm'],
     color: '#fb7185',
     image: null,
     game: {
@@ -940,16 +944,18 @@ export const results = {
     ],
     clashGames: [
       { name: 'Risk', emoji: '🌍' },
-      { name: 'Cards Against Humanity', emoji: '🃏' },
       { name: 'Battleship', emoji: '⚓' },
+      { name: 'Monopoly', emoji: '🏠' },
     ],
   },
   ESTJ: {
     type: 'ESTJ',
     title: 'The Executive',
+    tagline: 'House rules? Absolutely not',
     description:
       "Organized, direct, and dependable. You get things done — you see what needs to happen and you make it happen, no excuses. People count on you because you always deliver. You don't do chaos.",
-    traits: ['Brought the banker visor', 'Owns all four railroads', 'Rejects your house rules', 'Buys everything'],
+    traits: ['Brought the banker visor', 'Owns all four railroads', 'Rejects your house rules', 'Buys everything', 'Has been to jail, left immediately', 'Audited the bank'],
+    tags: ['organized', 'direct', 'dependable', 'decisive', 'by-the-book', 'results-driven', 'consistent', 'no-nonsense'],
     color: '#f87171',
     image: null,
     game: {
@@ -972,9 +978,11 @@ export const results = {
   ESFJ: {
     type: 'ESFJ',
     title: 'The Consul',
+    tagline: 'Everyone wins somehow',
     description:
       "Caring, social, and endlessly supportive. You're the heart of every group — the one who remembers birthdays, checks in on people, and makes everyone feel welcome. Your superpower is making others feel at home.",
-    traits: ['Picks your card for the win', 'Knows your funniest card', 'Brought homemade scorecards', 'Everyone wins somehow'],
+    traits: ['Picks your card for the win', 'Knows your funniest card', 'Brought homemade scorecards', 'Everyone wins somehow', 'Remembered your last joke', 'Made snacks for game night'],
+    tags: ['warm', 'social', 'caring', 'supportive', 'organized', 'loyal', 'inclusive', 'people-pleasing'],
     color: '#facc15',
     image: null,
     game: {
