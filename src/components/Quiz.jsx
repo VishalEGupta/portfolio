@@ -494,7 +494,7 @@ function ResultScreen({ result, onRetake, isMobile }) {
           opacity: 0.65,
           margin: '0 0 5px',
         }}>
-          Your board game persona is…
+          Your board game is…
         </p>
         <h2 style={{
           fontSize: isMobile ? 'clamp(20px, 5vw, 24px)' : '26px',
@@ -502,10 +502,20 @@ function ResultScreen({ result, onRetake, isMobile }) {
           letterSpacing: '-0.02em',
           lineHeight: 1.1,
           color: '#0f0f0f',
-          margin: '0 0 5px',
+          margin: '0 0 4px',
+        }}>
+          {result.game.emoji} {result.game.name}
+        </h2>
+        <p style={{
+          fontSize: '12px',
+          fontWeight: 600,
+          color: '#0f0f0f',
+          opacity: 0.5,
+          margin: '0 0 4px',
+          letterSpacing: '0.01em',
         }}>
           {result.title}
-        </h2>
+        </p>
         <p style={{
           fontSize: '13px',
           fontStyle: 'italic',
@@ -648,9 +658,17 @@ function ResultScreen({ result, onRetake, isMobile }) {
           }}>
             🤝 You'll love
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
             {result.compatibleGames.map((g) => (
-              <span key={g.name} style={{ fontSize: '12px', color: '#888888' }}>
+              <span key={g.name} style={{
+                display: 'inline-block',
+                padding: '4px 10px',
+                borderRadius: 20,
+                backgroundColor: '#191919',
+                border: '1px solid #252525',
+                color: '#888888',
+                fontSize: '11px',
+              }}>
                 {g.emoji} {g.name}
               </span>
             ))}
@@ -668,9 +686,17 @@ function ResultScreen({ result, onRetake, isMobile }) {
           }}>
             💀 Hard pass
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
             {result.clashGames.map((g) => (
-              <span key={g.name} style={{ fontSize: '12px', color: '#888888' }}>
+              <span key={g.name} style={{
+                display: 'inline-block',
+                padding: '4px 10px',
+                borderRadius: 20,
+                backgroundColor: '#191919',
+                border: '1px solid #252525',
+                color: '#888888',
+                fontSize: '11px',
+              }}>
                 {g.emoji} {g.name}
               </span>
             ))}

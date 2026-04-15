@@ -1007,9 +1007,11 @@ export const results = {
   ISTP: {
     type: 'ISTP',
     title: 'The Virtuoso',
+    tagline: 'Steady hands, no fear',
     description:
       "Bold, practical, and endlessly curious about how things work. You're a hands-on experimenter who loves figuring things out by doing. You stay cool under pressure because you trust your instincts and your skill.",
-    traits: ['Removes load-bearing block', 'Studies before touching', 'Steady hands, ice veins', 'Silent threat'],
+    traits: ['Removes load-bearing block', 'Studies before touching', 'Steady hands, ice veins', 'Silent threat', 'Never telegraphs the move', 'Clinically unbothered'],
+    tags: ['calm under pressure', 'practical', 'observant', 'independent', 'adaptable', 'precise', 'reserved', 'action-oriented'],
     color: '#f59e0b',
     image: null,
     game: {
@@ -1032,9 +1034,11 @@ export const results = {
   ISFP: {
     type: 'ISFP',
     title: 'The Adventurer',
+    tagline: 'Chose the scenic route, no regrets',
     description:
       "Flexible, charming, and quietly creative. You follow your passions wherever they lead, and you're always up for trying something new. Life is a canvas, and you paint it your own way — no fuss, no plan, all soul.",
-    traits: ['Chose the scenic route', '4 kids, zero regrets', 'Artist career, no notes', 'Vibes-based retirement'],
+    traits: ['Chose the scenic route', '4 kids, zero regrets', 'Artist career, no notes', 'Vibes-based retirement', 'Retired at the best time', 'Loved every detour'],
+    tags: ['spontaneous', 'gentle', 'artistic', 'adaptable', 'sensitive', 'curious', 'free-spirited', 'present-moment'],
     color: '#34d399',
     image: null,
     game: {
@@ -1057,9 +1061,11 @@ export const results = {
   ESTP: {
     type: 'ESTP',
     title: 'The Entrepreneur',
+    tagline: 'Called the carrier hit on turn three',
     description:
       "Energetic, perceptive, and action-oriented. You live for the moment and thrive when you have to think on your feet. You read people, read rooms, and move fast — while everyone else is still weighing options.",
-    traits: ['Called your carrier on T3', 'Pattern recognizer', 'Never misses when it counts', 'Strike first, think later'],
+    traits: ['Called your carrier on T3', 'Pattern recognizer', 'Never misses when it counts', 'Strike first, think later', 'Already found the edge case', 'Reads the room before the rules'],
+    tags: ['bold', 'perceptive', 'action-oriented', 'competitive', 'charming', 'adaptable', 'risk-taker', 'fast-moving'],
     color: '#94a3b8',
     image: null,
     game: {
@@ -1082,9 +1088,11 @@ export const results = {
   ESFP: {
     type: 'ESFP',
     title: 'The Entertainer',
+    tagline: 'You are the party',
     description:
       "Spontaneous, enthusiastic, and playful. Life is never boring around you — you bring energy, humor, and joy wherever you go. You're the reason people remember the night. The spotlight was made for you.",
-    traits: ['Reads cards in three voices', 'The spit-take card', 'Always the czar favorite', 'The party, not the guest'],
+    traits: ['Reads cards in three voices', 'The spit-take card', 'Always the czar favorite', 'The party, not the guest', 'Improvised a new rule, it stuck', 'Scored points for charisma alone'],
+    tags: ['spontaneous', 'fun-loving', 'expressive', 'bold', 'sociable', 'energetic', 'generous', 'in-the-moment'],
     color: '#fb923c',
     image: null,
     game: {

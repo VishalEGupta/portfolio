@@ -1,5 +1,7 @@
 import { useIsMobile } from '../hooks/useIsMobile'
 
+// Defined outside the component so the object is created once at module load, not
+// on every render. This is a minor perf / clarity choice — these styles never change.
 const styles = {
   label: {
     fontSize: '12px',
@@ -9,6 +11,9 @@ const styles = {
     marginBottom: '40px',
   },
   grid: {
+    // auto-fit + minmax: fills the row with as many 280px columns as fit,
+    // then each column expands equally to fill remaining space. On mobile this
+    // collapses naturally to a single column without any breakpoint logic.
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
     gap: '16px',
@@ -50,12 +55,14 @@ const styles = {
   },
 }
 
+// Static project data lives here alongside its renderer. It's short and unlikely
+// to grow, so a separate data file would add indirection with no real benefit.
 const projects = [
   {
     title: 'This site',
     description: 'Personal portfolio built with React and Vite. Deployed via GitHub Pages.',
     tags: ['React', 'Vite', 'GitHub Pages'],
-    href: null,
+    href: null, // No link — the card renders as a <div> rather than <a>
   },
   {
     title: 'Spotify dashboard',
@@ -78,6 +85,8 @@ export default function Projects() {
       <p style={styles.label}>Projects</p>
       <div style={styles.grid}>
         {projects.map((p) => {
+          // `inner` is extracted so the same JSX isn't duplicated inside both
+          // the <a> and <div> render paths below.
           const inner = (
             <>
               <h3 style={styles.cardTitle}>{p.title}</h3>
@@ -87,6 +96,9 @@ export default function Projects() {
               </div>
             </>
           )
+          // Cards with a destination render as <a> so they're real links
+          // (keyboard navigable, right-click → open in new tab, correct semantics).
+          // Cards without one render as <div> to avoid a dead href="#".
           return p.href
             ? <a key={p.title} href={p.href} style={styles.card}>{inner}</a>
             : <div key={p.title} style={styles.card}>{inner}</div>
