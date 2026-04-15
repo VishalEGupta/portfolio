@@ -539,7 +539,7 @@ function ResultScreen({ result, onRetake, isMobile }) {
             <img
               src={result.image}
               alt={result.title}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
             />
           ) : (
             result.game.emoji
@@ -630,12 +630,13 @@ function ResultScreen({ result, onRetake, isMobile }) {
       <div style={{
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
+        borderTop: '1px solid #1e1e1e',
         opacity: compatVisible ? 1 : 0,
         transform: compatVisible ? 'translateY(0)' : 'translateY(8px)',
         transition: 'opacity 0.6s ease, transform 0.6s ease',
       }}>
         <div style={{
-          padding: isMobile ? '12px 12px' : '14px 16px',
+          padding: isMobile ? '12px' : '14px 16px',
           borderRight: '1px solid #1e1e1e',
         }}>
           <p style={{
@@ -656,7 +657,7 @@ function ResultScreen({ result, onRetake, isMobile }) {
           </div>
         </div>
         <div style={{
-          padding: isMobile ? '12px 12px' : '14px 16px',
+          padding: isMobile ? '12px' : '14px 16px',
         }}>
           <p style={{
             fontSize: '10px',
@@ -681,7 +682,6 @@ function ResultScreen({ result, onRetake, isMobile }) {
       <div style={{
         padding: '16px',
         textAlign: 'center',
-        borderTop: '1px solid #1e1e1e',
       }}>
         <button
           onClick={onRetake}
