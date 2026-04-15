@@ -454,15 +454,14 @@ function QuestionScreen({ scene, selectedOption, hoveredOption, onAnswer, onHove
 
 function ResultScreen({ result, onRetake, isMobile }) {
   const [traitsVisible, setTraitsVisible] = useState(false)
-  const [gameVisible, setGameVisible] = useState(false)
+  const [tagsVisible, setTagsVisible] = useState(false)
   const [compatVisible, setCompatVisible] = useState(false)
   const [hoveringRetake, setHoveringRetake] = useState(false)
 
-  // Staggered reveal: traits → game card → compat section
   useEffect(() => {
-    const t1 = setTimeout(() => setTraitsVisible(true), 500)
-    const t2 = setTimeout(() => setGameVisible(true), 900)
-    const t3 = setTimeout(() => setCompatVisible(true), 1300)
+    const t1 = setTimeout(() => setTraitsVisible(true), 300)
+    const t2 = setTimeout(() => setTagsVisible(true), 700)
+    const t3 = setTimeout(() => setCompatVisible(true), 1100)
     return () => {
       clearTimeout(t1)
       clearTimeout(t2)
@@ -471,213 +470,206 @@ function ResultScreen({ result, onRetake, isMobile }) {
   }, [])
 
   return (
-    <div style={{ textAlign: 'center', maxWidth: 540 }}>
-      {/* Show real image if available, otherwise placeholder. Keeps layout stable
-          before assets are added. */}
-      {result.image ? (
-        <img
-          src={result.image}
-          alt={result.type}
-          style={{
-            width: isMobile ? 100 : 140,
-            height: isMobile ? 100 : 140,
-            borderRadius: '50%',
-            objectFit: 'cover',
-            margin: '0 auto 20px',
-            display: 'block',
-          }}
-        />
-      ) : (
-        <ImagePlaceholder
-          width={isMobile ? 100 : 140}
-          height={isMobile ? 100 : 140}
-          label="Portrait"
-          style={{
-            margin: '0 auto 20px',
-            borderRadius: '50%',
-          }}
-        />
-      )}
-      <p style={{
-        fontSize: '12px',
-        color: '#555555',
-        letterSpacing: '0.12em',
-        textTransform: 'uppercase',
-        margin: '0 0 12px',
-      }}>
-        You are
-      </p>
-      <h2 style={{
-        fontSize: 'clamp(1.8rem, 6vw, 2.8rem)',
-        fontWeight: 700,
-        color: result.color,
-        letterSpacing: '-0.02em',
-        lineHeight: 1.1,
-        margin: '0 0 24px',
-      }}>
-        {result.title}
-      </h2>
-      <p style={{
-        fontSize: isMobile ? '15px' : '16px',
-        color: '#c0beb8',
-        lineHeight: 1.7,
-        margin: '0 0 24px',
-        maxWidth: 480,
-        marginLeft: 'auto',
-        marginRight: 'auto',
-      }}>
-        {result.description}
-      </p>
+    <div style={{
+      width: '100%',
+      maxWidth: 520,
+      borderRadius: 14,
+      overflow: 'hidden',
+      border: '1px solid #1e1e1e',
+      backgroundColor: '#111111',
+    }}>
 
-      {/* Trait pills — fade in + slide up at 500ms (traitsVisible gate). */}
+      {/* 1. Title banner */}
       <div style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: 8,
-        justifyContent: 'center',
-        marginBottom: 40,
+        backgroundColor: result.color,
+        padding: isMobile ? '14px 18px 12px' : '18px 24px 14px',
+        textAlign: 'center',
+      }}>
+        <p style={{
+          fontSize: '10px',
+          letterSpacing: '0.16em',
+          textTransform: 'uppercase',
+          fontWeight: 600,
+          color: '#0f0f0f',
+          opacity: 0.65,
+          margin: '0 0 5px',
+        }}>
+          Your board game persona is…
+        </p>
+        <h2 style={{
+          fontSize: isMobile ? 'clamp(20px, 5vw, 24px)' : '26px',
+          fontWeight: 800,
+          letterSpacing: '-0.02em',
+          lineHeight: 1.1,
+          color: '#0f0f0f',
+          margin: '0 0 5px',
+        }}>
+          {result.title}
+        </h2>
+        <p style={{
+          fontSize: '13px',
+          fontStyle: 'italic',
+          color: '#0f0f0f',
+          opacity: 0.72,
+          margin: 0,
+        }}>
+          {result.tagline}
+        </p>
+      </div>
+
+      {/* 2. Hero split: emoji left, witty traits right */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: isMobile ? '90px 1fr' : '110px 1fr',
+        borderBottom: '1px solid #1e1e1e',
         opacity: traitsVisible ? 1 : 0,
         transform: traitsVisible ? 'translateY(0)' : 'translateY(8px)',
         transition: 'opacity 0.5s ease, transform 0.5s ease',
       }}>
-        {result.traits.map((trait) => (
-          // `18` appended to result.color is hex for 9.4% opacity — a very faint tint.
-          // `30` is ~19% opacity — used for the border to be slightly more visible.
-          <span
-            key={trait}
-            style={{
-              padding: '6px 14px',
-              borderRadius: 20,
-              backgroundColor: `${result.color}18`,
-              color: result.color,
-              fontSize: '13px',
-              fontWeight: 500,
-              letterSpacing: '0.02em',
-              border: `1px solid ${result.color}30`,
-            }}
-          >
-            {trait}
-          </span>
-        ))}
+        <div style={{
+          backgroundColor: '#0f0f0f',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: isMobile ? '44px' : '56px',
+          minHeight: isMobile ? '130px' : '150px',
+          borderRight: '1px solid #1e1e1e',
+        }}>
+          {result.image ? (
+            <img
+              src={result.image}
+              alt={result.title}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          ) : (
+            result.game.emoji
+          )}
+        </div>
+        <div style={{
+          padding: isMobile ? '12px' : '14px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 7,
+          justifyContent: 'center',
+        }}>
+          {result.traits.map((trait) => (
+            <span
+              key={trait}
+              style={{
+                display: 'inline-block',
+                padding: '5px 12px',
+                borderRadius: 20,
+                backgroundColor: `${result.color}18`,
+                border: `1px solid ${result.color}30`,
+                color: result.color,
+                fontSize: isMobile ? '11px' : '12px',
+                fontWeight: 500,
+                letterSpacing: '0.01em',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {trait}
+            </span>
+          ))}
+        </div>
       </div>
 
-      {/* Game card — fades in at 900ms, after traits have appeared. */}
+      {/* 3. Personality traits with rotated label */}
       <div style={{
-        opacity: gameVisible ? 1 : 0,
-        transform: gameVisible ? 'translateY(0)' : 'translateY(12px)',
-        transition: 'opacity 0.6s ease, transform 0.6s ease',
-        padding: '28px 24px',
-        backgroundColor: '#161616',
-        border: '1px solid #1e1e1e',
-        borderRadius: 12,
-        marginBottom: 16,
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: 12,
+        padding: isMobile ? '12px 14px' : '14px 16px',
+        borderBottom: '1px solid #1e1e1e',
+        opacity: tagsVisible ? 1 : 0,
+        transform: tagsVisible ? 'translateY(0)' : 'translateY(8px)',
+        transition: 'opacity 0.5s ease, transform 0.5s ease',
       }}>
-        <p style={{
-          fontSize: '11px',
-          color: '#555555',
-          letterSpacing: '0.14em',
+        <div style={{
+          writingMode: 'vertical-rl',
+          transform: 'rotate(180deg)',
+          fontSize: '9px',
+          letterSpacing: '0.16em',
           textTransform: 'uppercase',
-          margin: '0 0 16px',
+          color: '#444444',
+          whiteSpace: 'nowrap',
+          flexShrink: 0,
+          paddingTop: 2,
+          fontWeight: 500,
         }}>
-          Your board game match
-        </p>
-        {result.game.image ? (
-          <img
-            src={result.game.image}
-            alt={result.game.name}
-            style={{
-              width: isMobile ? 72 : 88,
-              height: isMobile ? 72 : 88,
-              borderRadius: 12,
-              objectFit: 'cover',
-              margin: '0 auto 14px',
-              display: 'block',
-            }}
-          />
-        ) : (
-          // Emoji fallback while game box-art images aren't ready yet.
-          <div style={{
-            fontSize: isMobile ? '48px' : '60px',
-            lineHeight: 1,
-            margin: '0 0 10px',
-          }}>
-            {result.game.emoji}
-          </div>
-        )}
-        <h3 style={{
-          fontSize: isMobile ? '20px' : '22px',
-          fontWeight: 600,
-          color: '#e8e6e0',
-          letterSpacing: '-0.02em',
-          margin: '0 0 10px',
+          Personality Traits
+        </div>
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 6,
+          paddingTop: 2,
         }}>
-          {result.game.name}
-        </h3>
-        <p style={{
-          fontSize: isMobile ? '14px' : '15px',
-          color: '#888888',
-          lineHeight: 1.6,
-          margin: 0,
-          maxWidth: 420,
-          marginLeft: 'auto',
-          marginRight: 'auto',
-        }}>
-          {result.game.reason}
-        </p>
+          {result.tags.map((tag) => (
+            <span
+              key={tag}
+              style={{
+                display: 'inline-block',
+                padding: '5px 11px',
+                borderRadius: 20,
+                backgroundColor: '#191919',
+                border: '1px solid #252525',
+                color: '#888888',
+                fontSize: '11px',
+              }}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
       </div>
 
-      {/* Compatible / Clash games — fades in at 1300ms, after the game card. */}
+      {/* 4. You'll love / Hard pass */}
       <div style={{
-        opacity: compatVisible ? 1 : 0,
-        transform: compatVisible ? 'translateY(0)' : 'translateY(12px)',
-        transition: 'opacity 0.6s ease, transform 0.6s ease',
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        gap: 12,
-        marginBottom: 32,
-        textAlign: 'left',
+        opacity: compatVisible ? 1 : 0,
+        transform: compatVisible ? 'translateY(0)' : 'translateY(8px)',
+        transition: 'opacity 0.6s ease, transform 0.6s ease',
       }}>
         <div style={{
-          padding: isMobile ? '16px 14px' : '20px 18px',
-          backgroundColor: '#161616',
-          border: '1px solid #1e1e1e',
-          borderRadius: 12,
+          padding: isMobile ? '12px 12px' : '14px 16px',
+          borderRight: '1px solid #1e1e1e',
         }}>
           <p style={{
-            fontSize: '11px',
+            fontSize: '10px',
             color: '#555555',
             letterSpacing: '0.14em',
             textTransform: 'uppercase',
-            margin: '0 0 12px',
+            margin: '0 0 10px',
           }}>
-            You'll love
+            🤝 You'll love
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {result.compatibleGames.map((g) => (
-              <span key={g.name} style={{ fontSize: '13px', color: '#c0beb8', lineHeight: 1.4 }}>
+              <span key={g.name} style={{ fontSize: '12px', color: '#888888' }}>
                 {g.emoji} {g.name}
               </span>
             ))}
           </div>
         </div>
         <div style={{
-          padding: isMobile ? '16px 14px' : '20px 18px',
-          backgroundColor: '#161616',
-          border: '1px solid #1e1e1e',
-          borderRadius: 12,
+          padding: isMobile ? '12px 12px' : '14px 16px',
         }}>
           <p style={{
-            fontSize: '11px',
+            fontSize: '10px',
             color: '#555555',
             letterSpacing: '0.14em',
             textTransform: 'uppercase',
-            margin: '0 0 12px',
+            margin: '0 0 10px',
           }}>
-            Hard pass
+            💀 Hard pass
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {result.clashGames.map((g) => (
-              <span key={g.name} style={{ fontSize: '13px', color: '#888888', lineHeight: 1.4 }}>
+              <span key={g.name} style={{ fontSize: '12px', color: '#888888' }}>
                 {g.emoji} {g.name}
               </span>
             ))}
@@ -685,25 +677,32 @@ function ResultScreen({ result, onRetake, isMobile }) {
         </div>
       </div>
 
-      <button
-        onClick={onRetake}
-        onMouseEnter={() => setHoveringRetake(true)}
-        onMouseLeave={() => setHoveringRetake(false)}
-        style={{
-          background: 'transparent',
-          border: `1px solid ${hoveringRetake ? '#555' : '#333'}`,
-          padding: '12px 36px',
-          borderRadius: 8,
-          fontSize: '14px',
-          fontWeight: 500,
-          cursor: 'pointer',
-          letterSpacing: '0.02em',
-          transition: 'all 0.2s',
-          color: hoveringRetake ? '#e8e6e0' : '#888888',
-        }}
-      >
-        Retake Quiz
-      </button>
+      {/* 5. Retake button */}
+      <div style={{
+        padding: '16px',
+        textAlign: 'center',
+        borderTop: '1px solid #1e1e1e',
+      }}>
+        <button
+          onClick={onRetake}
+          onMouseEnter={() => setHoveringRetake(true)}
+          onMouseLeave={() => setHoveringRetake(false)}
+          style={{
+            background: 'transparent',
+            border: `1px solid ${hoveringRetake ? '#555555' : '#333333'}`,
+            padding: '10px 32px',
+            borderRadius: 8,
+            fontSize: '13px',
+            fontWeight: 500,
+            cursor: 'pointer',
+            letterSpacing: '0.02em',
+            transition: 'all 0.2s',
+            color: hoveringRetake ? '#e8e6e0' : '#888888',
+          }}
+        >
+          Retake Quiz
+        </button>
+      </div>
     </div>
   )
 }
