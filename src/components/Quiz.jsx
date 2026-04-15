@@ -708,6 +708,7 @@ function ResultScreen({ result, onRetake, isMobile }) {
       <div style={{
         padding: '16px',
         textAlign: 'center',
+        borderBottom: '1px solid #1e1e1e',
       }}>
         <button
           onClick={onRetake}
@@ -728,6 +729,67 @@ function ResultScreen({ result, onRetake, isMobile }) {
         >
           Retake Quiz
         </button>
+      </div>
+
+      {/* 6. Research links */}
+      <div style={{
+        padding: isMobile ? '14px' : '16px 20px',
+      }}>
+        <p style={{
+          fontSize: '10px',
+          color: '#444444',
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          margin: '0 0 10px',
+          fontWeight: 500,
+        }}>
+          Further Reading
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {[
+            {
+              title: 'Situational Judgment Tests as a Method for Measuring Personality',
+              authors: 'Olaru, Burrus, MacCann, Zaromb, Wilhelm & Roberts — PLoS ONE, 2019',
+              url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6392235/',
+            },
+            {
+              title: 'Predicting Judging-Perceiving of Myers-Briggs Type Indicator (MBTI) in Online Social Forum',
+              authors: 'Choong & Varathan — PeerJ, 2021',
+              url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8234987/',
+            },
+            {
+              title: 'Myers-Briggs Type Indicator',
+              authors: 'Woods & Hill — StatPearls, 2022',
+              url: 'https://www.ncbi.nlm.nih.gov/books/NBK554596/',
+            },
+          ].map(({ title, authors, url }) => (
+            <div key={url}>
+              <a
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  fontSize: '12px',
+                  color: '#7c6fd4',
+                  textDecoration: 'none',
+                  lineHeight: 1.4,
+                  display: 'block',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = '#a78bfa' }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = '#7c6fd4' }}
+              >
+                {title}
+              </a>
+              <span style={{
+                fontSize: '11px',
+                color: '#444444',
+                lineHeight: 1.4,
+              }}>
+                {authors}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
